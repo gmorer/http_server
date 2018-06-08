@@ -1,20 +1,39 @@
 #include "../inc/iosocket.h"
 
-#include <string.h> //strlen
-#include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <signal.h>
-
 #define PORT 8080
 #define BUFF_SIZE 4096
 
 int g_socket_fd;
 
+void	*got_a_client(void *arg)
+{
+	t_client	*client;
+	char	buffer[BUFF_SIZE];
+
+	client = (t_client*)arg;
+	printf("%s:%d connected\n", inet_ntoa(client->client_addr.sin_addr), ntohs(client->client_addr.sin_port));
+	while ((client->req_len =  recv(client->clientfd, buffer, BUFF_SIZE, 0)))
+	{
+		printf("buffer: %s, len: %ld\n", buffer, client->req_len);
+		if (send(client->clientfd, buffer, client->req_len, 0) == -1)
+		{
+			printf("cant send\n");
+			break;
+		}
+	}
+	printf("Client disconnected!");
+	close(client->clientfd);
+	free(client);
+	return (NULL);
+}
+
 int main(void)
 {
+	unsigned int 			addrlen;
 	struct sockaddr_in	server;
-	char	buffer[BUFF_SIZE];
-	int true;
+	int								true;
+	pthread_t					tid;
+	t_client					*client;
 
 	if ((g_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0 )
 		return (1);
@@ -46,32 +65,16 @@ int main(void)
 		exit(1);
 	}
 		/*---Forever... ---*/
+	addrlen = sizeof(struct sockaddr_in);
 	while (1)
 	{
-		int									clientfd;
-		struct sockaddr_in	client_addr;
-		unsigned int 			addrlen;
-		size_t							req_len;
-		
-		addrlen = sizeof(client_addr);
+		client = malloc(sizeof(t_client));
+		bzero(client, sizeof(t_client));
 
 		/*---accept a connection (creating a data pipe)---*/
 		printf("waiting for connection...\n");
-		clientfd = accept(g_socket_fd, (struct sockaddr*)&client_addr, &addrlen);
-		printf("%s:%d connected\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-
-		/*---Echo back anything sent---*/
-		req_len =  recv(clientfd, buffer, BUFF_SIZE, 0);
-		if (!req_len) {
-			printf("Client disconnected!");
-		}
-		else {
-			printf("buffer: %s, len: %ld\n", buffer, req_len);
-			send(clientfd, buffer,  req_len, 0);
-		}
-
-		/*---Close data connection---*/
-		//close(clientfd);
+		client->clientfd = accept(g_socket_fd, (struct sockaddr*)&(client->client_addr), &addrlen);
+		pthread_create(&tid, NULL, got_a_client, (void*)client);
 	}
 
 	/*---Clean up (should never get here!)---*/

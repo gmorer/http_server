@@ -16,6 +16,8 @@ CC = gcc
 
 CFLAGS = -Werror -Wall -Wextra -g
 
+LIBFLAG = -lpthread
+
 CPATH = src/
 
 CFILES = \
@@ -40,7 +42,7 @@ INC = $(addprefix -I , $(HPATH))
 all: $(NAME)
 
 $(NAME): $(OPATH) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBFLAG) $(OBJ) -o $(NAME)
 
 $(OPATH):
 	mkdir -p $(OPATH)
