@@ -9,6 +9,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
 
+# define SOCKET_MAX_SIZE 1300
+
 typedef struct	s_client
 {
 	int clientfd;
@@ -19,5 +21,6 @@ typedef struct	s_client
 extern int g_socket_fd;
 
 void catch_sig(void);
+void *got_a_client(void *arg);
 
 #endif

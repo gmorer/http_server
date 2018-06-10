@@ -22,7 +22,8 @@ CPATH = src/
 
 CFILES = \
 	main.c \
-	signal.c
+	signal.c \
+	client.c
 
 OPATH = obj/
 

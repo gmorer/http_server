@@ -1,31 +1,8 @@
 #include "../inc/iosocket.h"
 
 #define PORT 8080
-#define BUFF_SIZE 4096
 
 int g_socket_fd;
-
-void	*got_a_client(void *arg)
-{
-	t_client	*client;
-	char	buffer[BUFF_SIZE];
-
-	client = (t_client*)arg;
-	printf("%s:%d connected\n", inet_ntoa(client->client_addr.sin_addr), ntohs(client->client_addr.sin_port));
-	while ((client->req_len =  recv(client->clientfd, buffer, BUFF_SIZE, 0)))
-	{
-		printf("buffer: %s, len: %ld\n", buffer, client->req_len);
-		if (send(client->clientfd, buffer, client->req_len, 0) == -1)
-		{
-			printf("cant send\n");
-			break;
-		}
-	}
-	printf("Client disconnected!");
-	close(client->clientfd);
-	free(client);
-	return (NULL);
-}
 
 int main(void)
 {
