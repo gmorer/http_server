@@ -10,7 +10,7 @@ void quit(int sig)
 	exit(1);
 }
 
-void catch_sig( void )
+void catch_sig(void)
 {
 	signal(SIGINT, &quit);
 	signal(SIGABRT, &quit);
@@ -22,11 +22,11 @@ void catch_sig( void )
 	signal(SIGINT, &quit);
 	signal(SIGKILL, &quit);
 	//signal(SIGPIPE, &quit);
-	signal(SIGPOLL, &quit);
+	//signal(SIGPOLL, &quit);
 	signal(SIGPROF, &quit);
 	signal(SIGSEGV, &quit);
 	signal(SIGSYS, &quit);
 	signal(SIGTERM, &quit);
 	signal(SIGTRAP, &quit);
-	return ;
+	return;
 }

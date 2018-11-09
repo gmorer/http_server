@@ -6,11 +6,11 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/11/22 11:58:26 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/08 16:55:51 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = socket
+NAME = server
 
 CC = gcc
 
@@ -23,7 +23,13 @@ CPATH = src/
 CFILES = \
 	main.c \
 	signal.c \
-	client.c
+	client.c \
+	cd.c	\
+	ls.c\
+	pwd.c\
+	receive.c\
+	send.c\
+	start_close.c
 
 OPATH = obj/
 
