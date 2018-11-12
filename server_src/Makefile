@@ -6,48 +6,64 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/12 14:03:20 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/12 14:09:18 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SERVER_NAME = server
+NAME = server
 
-CLIENT_NAME = client
+CC = gcc
 
-LIB_NAME = libftp.a
+CFLAGS = -Werror -Wall -Wextra -g
 
-LIB_DIR = lib
+LIBFLAG = -lpthread
 
-SERVER_DIR = server_src
+CPATH = src/
 
-CLIENT_DIR = client_src
+CFILES = \
+	main.c \
+	signal.c \
+	client.c \
+	cd.c	\
+	ls.c\
+	pwd.c\
+	receive.c\
+	send.c\
+	start_close.c
 
-.PHONY: all lib server client clean fclean re
+OPATH = obj/
 
-all: lib server # client
+OFILES = $(CFILES:.c=.o)
 
-lib:
-	make -C $(LIB_DIR)
-	ln -sf ../$(LIB_DIR)/ $(SERVER_DIR)
-#	ln -sf $(SERVER_DIR)/ $(CLIENT_DIR)
+LIB = lib/libftp.a
 
-server: lib
-	make -C $(SERVER_DIR)
-	ln -sf $(SERVER_DIR)/$(SERVER_NAME) .
+OBJ = $(addprefix $(OPATH), $(OFILES))
 
-client: lib
-	make -C $(CLIENT_DIR)
-	ln -sf $(CLIENT_DIR)/$(CLIENT_NAME) .
+HPATH = inc/\
+		lib/inc
+
+HFILES = \
+	inc/iosocket.h
+
+INC = $(addprefix -I , $(HPATH))
+
+.PHONY: all install clean fclean re
+
+all: $(NAME)
+
+$(NAME): $(OPATH) $(OBJ)
+	$(CC) $(CFLAGS) $(LIBFLAG) $(LIB) $(OBJ) -o $(NAME)
+
+$(OPATH):
+	mkdir -p $(OPATH)
+
+$(OPATH)%.o: $(CPATH)%.c $(HFILES)
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 clean:
-	make -C $(LIB_DIR) clean
-	make -C $(SERVER_DIR) clean
-#	make -C $(CLIENT_DIR) clean
+	rm -f $(OBJ)
 
 fclean: clean
-	rm -f $(SERVER_NAME) $(CLIENT_NAME) $(SERVER_DIR)/$(LIB_NAME)# $(CLIENT_DIR)/$(LIB_NAME)
-	make -C $(LIB_DIR) fclean
-	make -C $(SERVER_DIR) fclean
-#	make -C $(CLIENT_DIR) fclean
+	rm -f $(NAME)
 
 re: fclean all

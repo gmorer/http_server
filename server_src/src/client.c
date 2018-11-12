@@ -34,7 +34,7 @@ static void *response(void *arg)
 {
 	t_client *client;
 	char buffer[3];
-	char *res = "Yep";
+	// char *res = "Yep";
 	int ftp_code;
 
 	client = (t_client *)arg;

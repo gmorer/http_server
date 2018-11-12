@@ -9,6 +9,20 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
 #include <dirent.h>
+#include <limits.h>
+#include "libftp.h"
+
+/*
+ The absolute limitation on TCP packet size is 64K (65535 bytes),
+ but in practicality this is far larger than the size of any packet
+ you will see, because the lower layers (e.g. ethernet) have lower
+ packet sizes.
+ 
+ The MTU (Maximum Transmission Unit) for Ethernet, for instance,
+ is 1500 bytes. Some types of networks (like Token Ring) have
+ larger MTUs, and some types have smaller MTUs, but the values are
+ fixed for each physical technology.
+*/
 
 #define BUFF_SIZE 4096
 #define SOCKET_MAX_SIZE 1300
@@ -31,6 +45,14 @@
 	31 FILENAME // to send the file to the client
 	41 FILENAME DATA_LENGTH DATA // to receive the file
 	11 // To close the connection.
+
+	response ->
+
+	20 ok
+	21 length
+	22 end
+	40 error
+	41 error with message
 */
 
 typedef struct s_client
@@ -45,7 +67,6 @@ typedef void *(*t_command_fun)(t_client *client);
 
 extern int g_socket_fd;
 
-size_t ft_strlen(const char *s);
 void *command_start(t_client *client);
 void *command_close(t_client *client);
 void *command_ls(t_client *client);

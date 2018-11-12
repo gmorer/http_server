@@ -1,7 +1,5 @@
 #include "../inc/iosocket.h"
 
-#define PATH_MAX 500
-
 #define ERROR_MSG "getcwd() error"
 #define ERROR_MSG_LEN 14
 
