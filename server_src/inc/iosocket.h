@@ -51,7 +51,6 @@
 	20 ok
 	22 end
 	40 error
-	41 error with message
 */
 
 typedef struct s_client

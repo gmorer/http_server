@@ -10,9 +10,10 @@
     ENDL: oke
 */
 
-static size_t get_envelope_size(size_t payload_length)
+size_t get_envelope_size(size_t payload_size)
 {
-    return sizeof(char) + sizeof(size_t) * 2 + (sizeof(char) * payload_length);
+    static const size_t struct_size = sizeof(t_envelope) - sizeof(char) * PAYLOAD_MAX_SIZE;
+    return struct_size + (sizeof(char) * payload_size);
 }
 
 int send_response_in_loop(int fd, t_envelope *envelope, char *buffer, size_t buffer_length)
@@ -51,7 +52,7 @@ int send_response(int fd, char *buffer, size_t buffer_length)
         printf("2,copied:%zu\n", copied);
         ft_memcpy(envelope.payload, buffer + index, copied);
         printf("3\n");
-        envelope.payload_length = copied;
+        envelope.payload_size = copied;
         printf("4\n");
         envelope.pending_size = buffer_length - (index + copied); // should be zero for the last one
         printf("5\n");

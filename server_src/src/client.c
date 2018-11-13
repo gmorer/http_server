@@ -8,8 +8,7 @@ int g_socket_fd;
 
 static void *invalid_command(t_client *client)
 {
-	if (send(client->clientfd, INVALID_RESPONSE, INVALID_RESPONSE_LEN, 0) == -1)
-		printf("cant send\n");
+	send_failure(client->clientfd, INVALID_RESPONSE, INVALID_RESPONSE_LEN);
 	return (NULL);
 }
 
@@ -18,8 +17,7 @@ static void *invalid_response(void *arg)
 	t_client *client;
 
 	client = (t_client *)arg;
-	if (send(client->clientfd, INVALID_RESPONSE, INVALID_RESPONSE_LEN, 0) == -1)
-		printf("cant send\n");
+	send_failure(client->clientfd, INVALID_RESPONSE, INVALID_RESPONSE_LEN);
 	return (NULL);
 }
 
