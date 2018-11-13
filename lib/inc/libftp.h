@@ -17,7 +17,8 @@ typedef struct s_envelope
 } t_envelope;
 
 // int init_reponse(size_t length);
-int send_response(int fd, t_envelope *envelope, char *buffer, size_t buffer_length);
+int send_response_in_loop(int fd, t_envelope *envelope, char *buffer, size_t buffer_length);
+int send_response(int fd, char *buffer, size_t buffer_length);
 void *ft_memcpy(void *dst, const void *src, size_t n);
 size_t ft_strlen(const char *s);
 

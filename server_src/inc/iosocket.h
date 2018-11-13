@@ -49,7 +49,6 @@
 	response ->
 
 	20 ok
-	21 length
 	22 end
 	40 error
 	41 error with message
