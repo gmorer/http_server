@@ -6,30 +6,21 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/14 10:24:28 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/23 11:32:08 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = server
+NAME = client
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -g# -fsanitize=address
-
-LIBFLAG = -lpthread
+CFLAGS = -Werror -Wall -Wextra -g
 
 CPATH = src/
 
 CFILES = \
-	main.c \
-	signal.c \
-	client.c \
-	cd.c	\
-	ls.c\
-	pwd.c\
-	receive.c\
-	send.c\
-	start_close.c
+	main.c\
+	connect.c
 
 OPATH = obj/
 
@@ -43,7 +34,7 @@ HPATH = inc/\
 		lib/inc
 
 HFILES = \
-	inc/iosocket.h
+	inc/ftp_client.h
 
 INC = $(addprefix -I , $(HPATH))
 
@@ -52,7 +43,7 @@ INC = $(addprefix -I , $(HPATH))
 all: $(NAME)
 
 $(NAME): $(OPATH) $(OBJ)
-	$(CC) $(CFLAGS) $(LIBFLAG) $(LIB) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIB) $(OBJ) -o $(NAME)
 
 $(OPATH):
 	mkdir -p $(OPATH)

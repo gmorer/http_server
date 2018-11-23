@@ -26,5 +26,7 @@ int send_success(int fd, char *message, size_t length);
 size_t ft_strlen(const char *s);
 char *ft_strncpy(char *dst, const char *src, size_t n);
 size_t get_envelope_size(size_t payload_size);
+void *ft_memset(void *b, int c, size_t len);
+int ft_atoi(const char *str);
 
 #endif
