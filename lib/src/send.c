@@ -84,6 +84,13 @@ int send_response(int fd, char *buffer, size_t buffer_length)
         envelope.status = 20;
         response_length = get_envelope_size(copied);
         printf("payload length: %zu\n", envelope.payload_size);
+        for (int x = 0; x < 40; x++)
+        {
+            printf("[%d]", ((char*)(&envelope))[x]);
+            fflush(stdout);
+            if ((x + 1) % 5 == 0)
+                write(1, "\n", 1);
+        }
         if (send(fd, &envelope, response_length, 0) == -1)
         {
             printf("Error cantsend to the socket");

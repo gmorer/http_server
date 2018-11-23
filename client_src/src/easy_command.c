@@ -13,7 +13,8 @@ int fn_cd(int sock, char **argv)
         write(2, "Usage: cd [DIRECTORY]\n", 22);
         return (0);
     }
-    return ask_server(sock, 22, argv[1], ft_strlen(argv[1]));
+    printf("argv[1]: %s\n", argv[1]);
+    return ask_server(sock, 22, argv[1], ft_strlen(argv[1]) + 1);
 }
 
 int fn_pwd(int sock, char **argv)

@@ -1,19 +1,20 @@
 #include "../inc/iosocket.h"
 
-static char **enlarge_buffer(size_t size, char **old_buffer)
+static char **enlarge_buffer(size_t *size, char **old_buffer)
 {
     char **new_buffer;
     size_t new_size;
 
-    new_size = size + 30;
+    new_size = *size + 30;
     if (!(new_buffer = malloc(sizeof(char *) * new_size)))
         return (NULL);
-    ft_memcpy(new_buffer, old_buffer, sizeof(char *) * size);
+    ft_memcpy(new_buffer, old_buffer, sizeof(char *) * *size);
     free(old_buffer);
+    *size += 30;
     return (new_buffer);
 }
 
-static void *send_result(int fd, char **files_buffer, size_t buffer_length)
+static void *send_result(int fd, char **files_buffer, size_t buffer_length, DIR *rep)
 {
     char *payload;
     size_t total_size;
@@ -24,6 +25,7 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length)
     total_size = buffer_length;
     while (index < buffer_length)
     {
+        printf("files_buffer[%zu]: %s\n", index, files_buffer[index]);
         total_size += ft_strlen(files_buffer[index]);
         index++;
     }
@@ -39,6 +41,7 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length)
         index++;
     }
     payload[total_size] = '\0';
+    closedir(rep);
     printf("sending %s ...", payload);
     printf("total_size: %zu\n", total_size);
     send_response(fd, payload, total_size + 1);
@@ -63,13 +66,12 @@ void *command_ls(t_client *client)
         return (NULL); // send error
     while ((dp = readdir(rep)))
     {
-        if (index >= buffer_length)
-            if (!(files_buffer = enlarge_buffer(buffer_length, files_buffer)))
+        if (index + 1 >= buffer_length)
+            if (!(files_buffer = enlarge_buffer(&buffer_length, files_buffer)))
                 return (NULL); // send error
         files_buffer[index] = dp->d_name;
         index++;
         printf("size: %zu, name: %s\n", ft_strlen(dp->d_name), dp->d_name);
     }
-    closedir(rep);
-    return (send_result(client->clientfd, files_buffer, index));
+    return (send_result(client->clientfd, files_buffer, index, rep));
 }

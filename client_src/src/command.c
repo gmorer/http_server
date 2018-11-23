@@ -20,8 +20,11 @@ int execut_command(int sock, char **argv)
         else
             index++;
     }
-    write(1, "The command \"", 13);
-    write(1, argv[0], ft_strlen(argv[0]));
-    write(1, "\" does not exist.\n", 18);
+    if (argv[0])
+    {
+        write(1, "The command \"", 13);
+        write(1, argv[0], ft_strlen(argv[0]));
+        write(1, "\" does not exist.\n", 18);
+    }
     return (0);
 }
