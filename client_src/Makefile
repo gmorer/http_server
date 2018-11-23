@@ -20,7 +20,13 @@ CPATH = src/
 
 CFILES = \
 	main.c\
-	connect.c
+	connect.c\
+	main_loop.c\
+	command.c\
+	easy_command.c\
+	command_get.c\
+	command_put.c\
+	split_arg.c
 
 OPATH = obj/
 

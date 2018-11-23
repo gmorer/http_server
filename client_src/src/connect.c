@@ -26,8 +26,10 @@ static int first_method(int sock, char *address, int port)
             addr_info = addr_info->ai_next;
             continue ;
         }
+        freeaddrinfo(addr_info);
         return (1);
 	}
+    freeaddrinfo(addr_info);
     return (0);
 }
 #endif

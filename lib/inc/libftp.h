@@ -8,6 +8,7 @@
 
 #define SOCKET_MAX_SIZE 1300
 #define PAYLOAD_MAX_SIZE 1200
+#define GNL_BUFF_SIZE 512
 
 typedef struct s_envelope
 {
@@ -28,5 +29,10 @@ char *ft_strncpy(char *dst, const char *src, size_t n);
 size_t get_envelope_size(size_t payload_size);
 void *ft_memset(void *b, int c, size_t len);
 int ft_atoi(const char *str);
+char    *ft_strcat(char *s1, const char *s2);
+char	*ft_strsub(char const *s, unsigned int start, size_t len);
+char	*ft_strchr(const char *s, int c);
+int			get_next_line(int fd, char **line);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

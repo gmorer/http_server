@@ -22,7 +22,12 @@ CFILES = send.c\
 			messages.c\
 			strncpy.c\
 			memset.c\
-			atoi.c
+			atoi.c\
+			get_next_line.c\
+			strcat.c\
+			strchr.c\
+			strsub.c\
+			strcmp.c
 HFILES = inc/libftp.h
 INC = $(addprefix -I , $(HPATH))
 OBJ = $(addprefix $(OPATH), $(CFILES:.c=.o))

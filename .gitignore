@@ -1,4 +1,6 @@
 *.o
 *.a
-socket
+*.dSYM
+client
+server
 obj/
