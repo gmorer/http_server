@@ -10,10 +10,40 @@
     ENDL: oke
 */
 
+
 size_t get_envelope_size(size_t payload_size)
 {
     static const size_t struct_size = sizeof(t_envelope) - sizeof(char) * PAYLOAD_MAX_SIZE;
     return struct_size + (sizeof(char) * payload_size);
+}
+
+
+int ask_server(int sock, int status, char *payload, size_t payload_len)
+{
+    t_envelope request;
+    char       buff[SOCKET_MAX_SIZE];
+    size_t     res_len;
+
+    if (payload_len > PAYLOAD_MAX_SIZE)
+        return (0);
+    ft_memset(&request, 0, sizeof(request));
+    request.status = status;
+    if (!payload)
+        payload_len = 0;
+    if (payload_len)
+        ft_memcpy(request.payload, payload, payload_len);
+    if (send(sock, &request, get_envelope_size(payload_len), 0) == -1)
+    {
+        write(2, "Can't send this request.\n", 25);
+        return (0);
+    }
+    // TODO multiple socket response
+    res_len = recv(sock, buff, SOCKET_MAX_SIZE, 0);
+    fill_envelope(buff, &request);
+    write(1, request.payload, request.payload_size);
+    if (request.payload[request.payload_size - 1] != '\n')
+        write(1, "\n", 1);
+    return (1);
 }
 
 int send_response_in_loop(int fd, t_envelope *envelope, char *buffer, size_t buffer_length)
@@ -47,21 +77,13 @@ int send_response(int fd, char *buffer, size_t buffer_length)
     printf("sending %zu bytes\n", buffer_length);
     while (index < buffer_length)
     {
-        printf("1\n");
         copied = buffer_length - index < PAYLOAD_MAX_SIZE ? buffer_length - index : PAYLOAD_MAX_SIZE;
-        printf("2,copied:%zu\n", copied);
         ft_memcpy(envelope.payload, buffer + index, copied);
-        printf("3\n");
         envelope.payload_size = copied;
-        printf("4\n");
         envelope.pending_size = buffer_length - (index + copied); // should be zero for the last one
-        printf("5\n");
         envelope.status = 20;
-        printf("6\n");
         response_length = get_envelope_size(copied);
-        printf("7\n");
-        printf("send one chunk: %s\n", envelope.payload);
-        printf("response size: %zu\n", response_length);
+        printf("payload length: %zu\n", envelope.payload_size);
         if (send(fd, &envelope, response_length, 0) == -1)
         {
             printf("Error cantsend to the socket");

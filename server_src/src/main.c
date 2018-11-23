@@ -46,7 +46,7 @@ int main(void)
 	while (1)
 	{
 		client = malloc(sizeof(t_client));
-		bzero(client, sizeof(t_client));
+		ft_memset(client, 0, sizeof(client));
 
 		/*---accept a connection (creating a data pipe)---*/
 		printf("waiting for connection...\n");

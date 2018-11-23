@@ -25,11 +25,10 @@ int main(int argc, char **argv)
 	}
 
 	if (connect_to_server(sock, argv[1], port))
-    	send(sock, "hello", 5, 0);
+		main_loop(sock);
 	else {
 		return (0);
 		printf("Cant connect :(\n");
 	}
-	main_loop(sock);
 	return 0;
 }

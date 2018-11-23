@@ -21,18 +21,15 @@ static void *command_dispatcher(int ftp_code, t_client *client)
 
 static void *response(t_client *client)
 {
-	char buffer[3];
-	int ftp_code;
+	t_envelope *response;
 
-	buffer[0] = client->buffer[0];
-	buffer[1] = client->buffer[1];
-	buffer[2] = '\0';
-	ftp_code = atoi(buffer);
-	if (ftp_code == 0 || ftp_code >= COMMAND_MAX ||
-		(client->req_len > 2 && (client->buffer[2] >= '0' && client->buffer[2] <= '9')))
+	if (client->req_len < 5)
 		return invalid_command(client);
-	printf("ftp_code: %s\n%s\n", buffer, client->buffer);
-	return command_dispatcher(ftp_code, client);
+	response = (t_envelope*)client->buffer;
+	printf("response status: %d", (char)response->status);
+	if (response->status < 0 || response->status > COMMAND_MAX)
+		return invalid_command(client);
+	return command_dispatcher(response->status, client);
 }
 
 void *got_a_client(void *arg)

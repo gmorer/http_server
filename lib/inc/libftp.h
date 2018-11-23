@@ -20,7 +20,9 @@ typedef struct s_envelope
 
 // int init_reponse(size_t length);
 int send_response_in_loop(int fd, t_envelope *envelope, char *buffer, size_t buffer_length);
+int ask_server(int sock, int status, char *payload, size_t payload_len);
 int send_response(int fd, char *buffer, size_t buffer_length);
+void    fill_envelope(char *buffer, t_envelope *envelope);
 void *ft_memcpy(void *dst, const void *src, size_t n);
 int send_failure(int fd, char *message, size_t length);
 int send_success(int fd, char *message, size_t length);

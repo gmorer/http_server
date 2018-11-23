@@ -35,7 +35,7 @@ int send_failure(int fd, char *message, size_t length)
         message = "Operation failure.";
         length = 18;
     }
-    envelope.status = 40;
+    envelope.status = 44;
     ft_strncpy(envelope.payload, message, PAYLOAD_MAX_SIZE);
     envelope.pending_size = 0;
     envelope.payload_size = length;
