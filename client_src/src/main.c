@@ -4,7 +4,6 @@ int main(int argc, char **argv)
 {
 	int sock;
 	int port;
-	char *hostname;
 
 	if (argc < 3)
 	{
@@ -16,7 +15,6 @@ int main(int argc, char **argv)
 		printf("\n Socket creation error \n");
 		return -1;
 	}
-	hostname = argv[1];
 	port = ft_atoi(argv[2]);
 	if (!port || port < 0)
 	{

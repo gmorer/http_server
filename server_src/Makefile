@@ -52,7 +52,7 @@ INC = $(addprefix -I , $(HPATH))
 all: $(NAME)
 
 $(NAME): $(OPATH) $(OBJ)
-	$(CC) $(CFLAGS) $(LIBFLAG) $(LIB) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(LIBFLAG) $(OBJ) -o $(NAME) $(LIB)
 
 $(OPATH):
 	mkdir -p $(OPATH)

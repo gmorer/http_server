@@ -1,6 +1,9 @@
 *.o
 *.a
 *.dSYM
+lib/libftp.a
 client
 server
 obj/
+client_src/client
+server_src/server

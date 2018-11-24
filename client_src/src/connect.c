@@ -45,6 +45,8 @@ static int second_method(int sock, char *address, int port)
         printf("gethostbyname error");
     client.sin_port = htons(port);
 	client.sin_family = AF_INET;
+	if (!server->h_addr_list[0])
+		write(2, "Error\n", 6);
     ft_memcpy(&(client.sin_addr), server->h_addr_list[0], server->h_length);
     if (connect(sock, (struct sockaddr *)&client, sizeof(client)) == -1)
 	{
