@@ -34,6 +34,7 @@ int fn_lcd(int sock, char **argv)
 int fn_lpwd(int sock, char **argv)
 {
     char cwd[PATH_MAX];
+    
     (void)argv;
     (void)sock;
     if (getcwd(cwd, sizeof(cwd)) != NULL)
