@@ -25,7 +25,6 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length, DIR 
     total_size = buffer_length;
     while (index < buffer_length)
     {
-        printf("files_buffer[%zu]: %s\n", index, files_buffer[index]);
         total_size += ft_strlen(files_buffer[index]);
         index++;
     }
@@ -42,8 +41,6 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length, DIR 
     }
     payload[total_size] = '\0';
     closedir(rep);
-    printf("sending %s ...", payload);
-    printf("total_size: %zu\n", total_size);
     send_response(fd, payload, total_size + 1);
     free(files_buffer);
     free(payload);
@@ -71,7 +68,6 @@ void *command_ls(t_client *client)
                 return (NULL); // send error
         files_buffer[index] = dp->d_name;
         index++;
-        printf("size: %zu, name: %s\n", ft_strlen(dp->d_name), dp->d_name);
     }
     return (send_result(client->clientfd, files_buffer, index, rep));
 }

@@ -13,7 +13,6 @@ int fn_cd(int sock, char **argv)
         write(2, "Usage: cd [DIRECTORY]\n", 22);
         return (0);
     }
-    printf("argv[1]: %s\n", argv[1]);
     return ask_server(sock, 22, argv[1], ft_strlen(argv[1]) + 1);
 }
 
@@ -33,8 +32,8 @@ int fn_help(int sock, char **argv)
     ls: list entity in the current directory\n\
     cd [DIRECTORY]: change the current directory on the server\n\
     pwd: print the path of the current directory\n\
-    get [FILENAME]: download the file\n\
-    put [FILENAME]: uplaud the file to the server\n\
-    ", 19 + 23 + 41 + 59 + 45 + 34 + 46 + 24);
+    get: [FILENAME]: download the file\n\
+    put: [FILENAME]: uplaud the file to the server\n\
+    ", 19 + 23 + 41 + 59 + 45 + 34 + 47 + 25);
     return (1);
 }

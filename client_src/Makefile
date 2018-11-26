@@ -24,6 +24,7 @@ CFILES = \
 	main_loop.c\
 	command.c\
 	easy_command.c\
+	local_command.c\
 	command_get.c\
 	command_put.c\
 	split_arg.c

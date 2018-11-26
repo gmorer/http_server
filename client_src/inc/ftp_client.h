@@ -7,6 +7,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <limits.h>
+#include <dirent.h>
 #include "libftp.h"
 
 typedef int (*t_command_fun)(int sock, char **argv);
@@ -18,7 +20,7 @@ typedef struct s_command
 
 }               t_command;
 
-#define COMMAND_TAB_LEN 7
+#define COMMAND_TAB_LEN 10
 #define COMMAND_TAB            \
         {                      \
             {"exit", fn_exit}, \
@@ -28,6 +30,9 @@ typedef struct s_command
             {"get", fn_get},   \
             {"put", fn_put},   \
             {"help", fn_help},   \
+            {"lls", fn_lls},     \
+            {"lcd", fn_lcd},     \
+            {"lpwd", fn_lpwd},   \
         }
 
 char **split_args(char const *s);
@@ -40,5 +45,8 @@ int fn_pwd(int sock, char **argv);
 int fn_put(int sock, char **argv);
 int fn_get(int sock, char **argv);
 int fn_help(int sock, char **argv);
+int fn_lls(int sock, char **argv);
+int fn_lcd(int sock, char **argv);
+int fn_lpwd(int sock, char **argv);
 
 #endif

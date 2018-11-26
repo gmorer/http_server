@@ -42,7 +42,10 @@ static int second_method(int sock, char *address, int port)
 
     server = gethostbyname(address);
     if (!server)
-        printf("gethostbyname error");
+    {
+        printf("gethostbyname error\n");
+        return (0);
+    }
     client.sin_port = htons(port);
 	client.sin_family = AF_INET;
 	if (!server->h_addr_list[0])

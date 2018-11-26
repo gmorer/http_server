@@ -4,7 +4,7 @@ int fn_exit(int sock, char **argv)
 {
     (void)sock;
     (void)argv;
-    exit(1);
+    exit(0);
 }
 
 int execut_command(int sock, char **argv)
