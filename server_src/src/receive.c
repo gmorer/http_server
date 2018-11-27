@@ -5,5 +5,5 @@ void *command_receive(t_client *client, char **path)
     (void)client;
     (void)path;
     printf("RECEIVE\n");
-    return "NULL";
+    return GOOD_RETURN;
 }

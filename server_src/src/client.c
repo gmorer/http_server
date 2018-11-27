@@ -43,10 +43,12 @@ void *got_a_client(void *arg)
 	printf("%s:%d connected\n", inet_ntoa(client->client_addr.sin_addr), ntohs(client->client_addr.sin_port));
 	while ((client->req_len = recv(client->clientfd, client->buffer, BUFF_SIZE, 0)))
 	{
-		response(client, &path);
+		if (!response(client, &path))
+			break;
 	}
 	close(client->clientfd);
-	printf("Client disconnected!");
+	free(path);
+	write(1, "Client disconnected.\n", 21);
 	free(client);
 	return (NULL);
 }

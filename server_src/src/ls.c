@@ -69,5 +69,6 @@ void *command_ls(t_client *client, char **path)
         files_buffer[index] = dp->d_name;
         index++;
     }
-    return (send_result(client->clientfd, files_buffer, index, rep));
+    send_result(client->clientfd, files_buffer, index, rep);
+    return (GOOD_RETURN);
 }

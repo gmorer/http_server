@@ -6,5 +6,5 @@
 void *command_pwd(t_client *client, char **path)
 {
     send_response(client->clientfd, *path, ft_strlen(*path));
-    return (NULL);
+    return GOOD_RETURN;
 }

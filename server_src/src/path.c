@@ -109,6 +109,7 @@ int go_to(char **path, char *dest)
     remove_dots(new_path);
     if (is_valid_path(new_path))
     {
+        free(*path);
         *path = new_path;
         return (1);
     }

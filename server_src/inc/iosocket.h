@@ -28,7 +28,7 @@
 #define BUFF_SIZE 4096
 #define SOCKET_MAX_SIZE 1300
 #define COMMAND_MAX 50
-
+#define GOOD_RETURN ((void*)1)
 // Les constantes de préprocesseur (#define) que vous créez ne doivent être utilisés
 // que pour associer des valeurs littérales et constantes, et rien d’autre.
 

@@ -14,5 +14,5 @@ void *command_cd(t_client *client, char **path)
     {
         send_failure(client->clientfd, "Operation failure, getcwd() error.", 34);
     }
-    return NULL;
+    return GOOD_RETURN;
 }

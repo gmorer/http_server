@@ -5,5 +5,5 @@ void *command_send(t_client *client, char **path)
     (void)client;
     (void)path;
     printf("SEND\n");
-    return "NULL";
+    return GOOD_RETURN;
 }
