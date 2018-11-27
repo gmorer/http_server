@@ -28,7 +28,10 @@ CFILES = send.c\
 			strchr.c\
 			strsub.c\
 			strcmp.c\
-			envelope.c
+			envelope.c\
+			strsplit.c\
+			strstr.c\
+			strdup.c
 HFILES = inc/libftp.h
 INC = $(addprefix -I , $(HPATH))
 OBJ = $(addprefix $(OPATH), $(CFILES:.c=.o))

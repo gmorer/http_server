@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/23 16:42:40 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/27 14:44:41 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ CFILES = \
 	pwd.c\
 	receive.c\
 	send.c\
-	start_close.c
+	start_close.c\
+	path.c\
+	strstrfree.c
 
 OPATH = obj/
 

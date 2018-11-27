@@ -5,7 +5,9 @@ int g_socket_fd;
 
 void quit(int sig)
 {
-	printf("Terminate with signal %d\n", sig);
+	(void)sig;
+	// printf("Terminate with signal %d\n", sig);
+	// printf("Terminate with signal\n");
 	close(g_socket_fd);
 	exit(1);
 }

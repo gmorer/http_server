@@ -47,7 +47,7 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length, DIR 
     return (NULL);
 }
 
-void *command_ls(t_client *client)
+void *command_ls(t_client *client, char **path)
 {
     struct dirent *dp;
     DIR *rep;
@@ -59,7 +59,7 @@ void *command_ls(t_client *client)
     if (!(files_buffer = malloc(sizeof(char *) * 30)))
         return (NULL); // send error
     buffer_length = 30;
-    if (!(rep = opendir(".")))
+    if (!(rep = opendir(*path)))
         return (NULL); // send error
     while ((dp = readdir(rep)))
     {

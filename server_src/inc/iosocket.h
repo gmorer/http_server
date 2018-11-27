@@ -10,6 +10,7 @@
 #include <arpa/inet.h> //inet_addr
 #include <dirent.h>
 #include <limits.h>
+#include <sys/stat.h>
 #include "libftp.h"
 
 /*
@@ -61,18 +62,23 @@ typedef struct s_client
 	char buffer[BUFF_SIZE];
 } t_client;
 
-typedef void *(*t_command_fun)(t_client *client);
+typedef void *(*t_command_fun)(t_client *client, char **path);
+
+
 
 extern int g_socket_fd;
+extern char g_root_path[PATH_MAX];
 
-void *command_start(t_client *client);
-void *command_close(t_client *client);
-void *command_ls(t_client *client);
-void *command_cd(t_client *client);
-void *command_pwd(t_client *client);
-void *command_send(t_client *client);
-void *command_receive(t_client *client);
+void *command_start(t_client *client, char **path);
+void *command_close(t_client *client, char **path);
+void *command_ls(t_client *client, char **path);
+void *command_cd(t_client *client, char **path);
+void *command_pwd(t_client *client, char **path);
+void *command_send(t_client *client, char **path);
+void *command_receive(t_client *client, char **path);
 void catch_sig(void);
 void *got_a_client(void *arg);
+int go_to(char **path, char *dest);
+void ft_strtsrfree(char **arg);
 
 #endif

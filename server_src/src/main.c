@@ -2,6 +2,7 @@
 
 #define PORT 8080
 
+char	g_root_path[PATH_MAX];
 int g_socket_fd;
 
 int main(void)
@@ -20,6 +21,7 @@ int main(void)
 	server.sin_port = htons(PORT);
 	server.sin_addr.s_addr = INADDR_ANY;
 
+	getcwd(g_root_path, PATH_MAX);
 	/*---Assign a port number to the socket---*/
 	if (bind(g_socket_fd, (struct sockaddr *)&server, sizeof(server)) != 0)
 	{
