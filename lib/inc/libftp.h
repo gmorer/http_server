@@ -1,12 +1,15 @@
 #ifndef LIBFTP_H
 #define LIBFTP_H
 
-#include <sys/socket.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/uio.h>
 
-#define SOCKET_MAX_SIZE 1300
 #define PAYLOAD_MAX_SIZE 1200
 #define GNL_BUFF_SIZE 512
 
@@ -19,7 +22,7 @@ typedef struct s_envelope
 } t_envelope;
 
 // int init_reponse(size_t length);
-int send_response_in_loop(int fd, t_envelope *envelope, char *buffer, size_t buffer_length);
+int send_multiple_response(int fd, char *buffer, size_t actual_size, size_t pending_size);
 int ask_server(int sock, int status, char *payload, size_t payload_len);
 int send_response(int fd, char *buffer, size_t buffer_length);
 void    fill_envelope(char *buffer, t_envelope *envelope);

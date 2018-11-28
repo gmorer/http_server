@@ -35,6 +35,8 @@ int send_failure(int fd, char *message, size_t length)
         message = "Operation failure.";
         length = 18;
     }
+    if (!length)
+        length = ft_strlen(message);
     envelope.status = 44;
     ft_strncpy(envelope.payload, message, PAYLOAD_MAX_SIZE);
     envelope.pending_size = 0;
@@ -45,5 +47,5 @@ int send_failure(int fd, char *message, size_t length)
         socket_error_msg();
         return (0);
     }
-    return (1);
+    return (0);
 }
