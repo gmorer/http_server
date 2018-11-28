@@ -41,7 +41,7 @@ static void *send_result(int fd, char **files_buffer, size_t buffer_length, DIR 
     }
     payload[total_size] = '\0';
     closedir(rep);
-    send_response(fd, payload, total_size + 1);
+    send_response(fd, payload, total_size);
     free(files_buffer);
     free(payload);
     return (NULL);

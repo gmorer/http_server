@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/27 16:14:47 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/28 15:54:23 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = server
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -g #-fsanitize=address
+CFLAGS = -Werror -Wall -Wextra -g -fsanitize=address
 
 LIBFLAG = -lpthread
 

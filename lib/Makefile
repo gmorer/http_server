@@ -6,13 +6,13 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/01 11:36:51 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/23 15:18:56 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/28 17:39:33 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftp.a
 CC = clang
-CFLAGS= -Werror -Wextra -Wall -g
+CFLAGS= -Werror -Wextra -Wall -g -fsanitize=address
 CPATH = src/
 HPATH = inc/
 OPATH = obj/
@@ -31,7 +31,8 @@ CFILES = send.c\
 			envelope.c\
 			strsplit.c\
 			strstr.c\
-			strdup.c
+			strdup.c\
+			ftp.c
 HFILES = inc/libftp.h
 INC = $(addprefix -I , $(HPATH))
 OBJ = $(addprefix $(OPATH), $(CFILES:.c=.o))

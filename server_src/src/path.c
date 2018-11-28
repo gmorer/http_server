@@ -19,6 +19,7 @@ char    *path_join(char *first, char *second)
     add_size -= second[second_len - 1] == '/';
     if ((rslt = malloc((first_len + second_len + add_size + 1) * sizeof(char))) == NULL)
         return (NULL);
+    rslt[first_len + second_len + add_size] = '\0';
     ft_memset(rslt, 0, (first_len + second_len + add_size)* sizeof(char));
     ft_memcpy(rslt, first, first[first_len - 1] == '/' ? --first_len : first_len);
     rslt[first_len] = '/';
@@ -95,6 +96,7 @@ int go_to(char **path, char *dest)
 {
     char *new_path;
 
+    printf("DEST::: %s\n", dest);
     if (!path || !*path || !dest)
     {
         printf("path?: %d\n", !!path);

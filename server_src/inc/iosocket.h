@@ -59,7 +59,7 @@ typedef struct s_client
 	int clientfd;
 	struct sockaddr_in client_addr;
 	size_t req_len;
-	char buffer[BUFF_SIZE];
+	t_envelope envelope;
 } t_client;
 
 typedef void *(*t_command_fun)(t_client *client, char **path);

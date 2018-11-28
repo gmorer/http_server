@@ -22,15 +22,11 @@ static void *command_dispatcher(int ftp_code, t_client *client, char **path)
 
 static void *response(t_client *client, char **path)
 {
-	t_envelope *response;
-
 	if (client->req_len < 5)
 		return invalid_command(client, NULL);
-	response = (t_envelope*)client->buffer;
-	printf("response status: %d", (char)response->status);
-	if (response->status < 0 || response->status > COMMAND_MAX)
+	if (client->envelope.status < 0 || client->envelope.status > COMMAND_MAX)
 		return invalid_command(client, NULL);
-	return command_dispatcher(response->status, client, path);
+	return command_dispatcher(client->envelope.status, client, path);
 }
 
 void *got_a_client(void *arg)
@@ -41,10 +37,11 @@ void *got_a_client(void *arg)
 	path = ft_strdup(g_root_path);
 	client = (t_client *)arg;
 	printf("%s:%d connected\n", inet_ntoa(client->client_addr.sin_addr), ntohs(client->client_addr.sin_port));
-	while ((client->req_len = recv(client->clientfd, client->buffer, BUFF_SIZE, 0)))
+	while ((client->req_len = recv(client->clientfd, (void*)&(client->envelope), sizeof(t_envelope), 0)))
 	{
 		if (!response(client, &path))
 			break;
+		ft_memset((void*)&(client->envelope), 0, sizeof(t_envelope));
 	}
 	close(client->clientfd);
 	free(path);
