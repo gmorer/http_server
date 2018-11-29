@@ -43,7 +43,6 @@ int send_failure(int fd, char *message, size_t length)
     envelope.payload_size = length;
     if (send(fd, &envelope, get_envelope_size(length), 0) == -1)
     {
-
         socket_error_msg();
         return (0);
     }

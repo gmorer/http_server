@@ -1,5 +1,27 @@
 #include "ftp_client.h"
 
+int file_ok(char *file)
+{
+    struct stat buf;
+
+    if (stat(file, &buf) == -1)
+    {
+        write(2, "Can't read the file information.\n", 32);
+        return (0);
+    }
+    if (!(buf.st_mode & S_IRUSR))
+    {
+        write(2, "Invalid file permission.\n", 24);
+        return (0); // you ave no rigths)
+    }
+    if(!(S_ISREG(buf.st_mode)))
+    {
+        write(2, "This is not a file\n", 18);
+        return (0);
+    }
+    return (1);
+}
+
 int fn_put(int sock, char **argv)
 {
     t_envelope envelope;
@@ -9,6 +31,8 @@ int fn_put(int sock, char **argv)
         write(2, "Bad usage, usage: put [FILE].\n", 30);
         return (0);
     }
+    if (!file_ok(argv[1]))
+        return (0);
     ft_memset(&envelope, 0, sizeof(t_envelope));
     envelope.status = 41;
     envelope.pending_size = 0;
@@ -19,7 +43,7 @@ int fn_put(int sock, char **argv)
     write(1, "Starting\n", 9);
     send(sock, &envelope, get_envelope_size(ft_strlen(argv[1]) + 1), 0);
     write(1, "filename sended\n", 16);
-    send_file(sock, argv[1], 0);
+    send_file(sock, argv[1], 1);
     write(1, "put\n", 4);
     return (1);
 }

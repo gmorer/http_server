@@ -62,7 +62,8 @@ int send_multiple_response(int fd, t_envelope envelope, size_t actual_size, size
     if (send(fd, &envelope, response_length, 0) == -1)
         return (0);
     // write(1, "waiting for response...\n", 24);
-    recv(fd, &envelope, sizeof(t_envelope), 0); // maybe verify
+    if (recv(fd, &envelope, sizeof(t_envelope), 0) == -1)
+        return (0);
     // write(1, "RESPONSE Ok\n", 12);
     return (1);
 }

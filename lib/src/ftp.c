@@ -51,19 +51,30 @@ int send_file(int sock_fd, char *file_path, int is_client)
         write(1, "\33[2K\r100%\n", 10);
         write(1, "finish!\n", 8);
     }
-    return send_finish(sock_fd);
+    return send_finish(sock_fd) == -1 ? 0 : 1;
 }
 
 int receive_one_chunk(int sock_fd, t_envelope *envelope)
 {
     t_envelope  res_envelope;
 
-    recv(sock_fd, envelope, sizeof(t_envelope), 0);
+    if (recv(sock_fd, envelope, sizeof(t_envelope), 0) == -1)
+    {
+        write(1, "recv error\n", 10);
+        envelope->status = 40;
+        return (40);
+    }
     ft_memset(&res_envelope, 0, sizeof(t_envelope));
     res_envelope.status = 20;
     res_envelope.payload_size = 0;
     res_envelope.pending_size = 0;
-    send(sock_fd, &res_envelope, get_envelope_size(0), 0);
+    if (envelope->status != 21)
+        return envelope->status;
+    if (send(sock_fd, &res_envelope, get_envelope_size(0), 0) == -1)
+    {
+        envelope->status = 40;
+        return 0;
+    }
     return (envelope->status);
 }
 
@@ -88,7 +99,11 @@ int receive_file(int sock_fd, char *file_path, int is_client)
         return (0); // cant open the file;
     }
     write(1, "sending ready signal...\n", 25);
-    send(sock_fd, envelope, get_envelope_size(0), 0);
+    if (send(sock_fd, envelope, get_envelope_size(0), 0) == -1)
+    {
+        write(1, "cant send ready signal\n", 23);
+        return (0);
+    }
     while ((status = receive_one_chunk(sock_fd, envelope)) == 21)
     {
         if (is_client)
