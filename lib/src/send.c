@@ -49,23 +49,21 @@ int ask_server(int sock, int status, char *payload, size_t payload_len)
     return (1);
 }
 
-int send_multiple_response(int fd, char *buffer, size_t actual_size, size_t pending_size)
+int send_multiple_response(int fd, t_envelope envelope, size_t actual_size, size_t pending_size)
 {
-    t_envelope  envelope;
     size_t      response_length;
 
-    printf("sending %zu bytes\n", actual_size);
-    ft_memcpy(envelope.payload, buffer, actual_size);
+    // printf("sending %zu bytes\n", actual_size);
     envelope.payload_size = actual_size;
     envelope.pending_size = pending_size;
     envelope.status = 21;
     response_length = get_envelope_size(actual_size);
-    write(1, "sending payload........\n", 24);
+    // write(1, "sending payload........\n", 24);
     if (send(fd, &envelope, response_length, 0) == -1)
         return (0);
-    write(1, "waiting for response...\n", 24);
-    recv(fd, &envelope, sizeof(envelope), 0); // maybe verify
-    write(1, "RESPONSE Ok\n", 21);
+    // write(1, "waiting for response...\n", 24);
+    recv(fd, &envelope, sizeof(t_envelope), 0); // maybe verify
+    // write(1, "RESPONSE Ok\n", 12);
     return (1);
 }
 
