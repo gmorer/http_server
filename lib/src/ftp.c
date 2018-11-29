@@ -10,7 +10,7 @@ int send_finish(int sock_fd)
     return send(sock_fd, &envelope, get_envelope_size(0), 0);
 }
 
-int send_file(int sock_fd, char *file_path)
+int send_file(int sock_fd, char *file_path, int is_client)
 {
     struct stat file_stat;
     size_t      file_size;
@@ -31,9 +31,12 @@ int send_file(int sock_fd, char *file_path)
     while ((read_ret = read(file_fd, envelope.payload, PAYLOAD_MAX_SIZE)) > 0)
     {
         //printf("%d bytes readded\n", read_ret);
-        printf("\33[2K\r");
-        printf("%.2f%%", (float)(file_size_bckp - file_size) * 100 / (float)file_size_bckp);
-        fflush(stdout);
+        if (is_client)
+        {
+            printf("\33[2K\r");
+            printf("%.2f%%", (float)(file_size_bckp - file_size) * 100 / (float)file_size_bckp);
+            fflush(stdout);
+        }
         file_size -= read_ret;
         // printf("size left: %zu\n", file_size);
         if (!send_multiple_response(sock_fd, envelope, read_ret, file_size))
@@ -43,8 +46,11 @@ int send_file(int sock_fd, char *file_path)
             return (0); // error while sending what to do?
         }
     }
-    write(1, "\33[2K\r100%\n", 10);
-    write(1, "finish!\n", 8);
+    if (is_client)
+    {
+        write(1, "\33[2K\r100%\n", 10);
+        write(1, "finish!\n", 8);
+    }
     return send_finish(sock_fd);
 }
 
@@ -61,13 +67,15 @@ int receive_one_chunk(int sock_fd, t_envelope *envelope)
     return (envelope->status);
 }
 
-int receive_file(int sock_fd, char *file_path)
+int receive_file(int sock_fd, char *file_path, int is_client)
 {
     int file_fd;
     char status;
     char buff[sizeof(t_envelope)];
     t_envelope *envelope;
+    size_t file_size;
 
+    file_size = 0;
     ft_memset(buff, 0, sizeof(t_envelope));
     envelope = (t_envelope*)buff;
     envelope->status = 20;
@@ -83,13 +91,24 @@ int receive_file(int sock_fd, char *file_path)
     send(sock_fd, envelope, get_envelope_size(0), 0);
     while ((status = receive_one_chunk(sock_fd, envelope)) == 21)
     {
+        if (is_client)
+        {
+            file_size = file_size ? file_size : envelope->pending_size + envelope->payload_size;
+            printf("\33[2K\r");
+            printf("%.2f%%", (float)(file_size - envelope->pending_size) * 100 / (float)file_size);
+            fflush(stdout);
+        }
         // write(1, "1", 1);
         // printf("envelope status:%d\n", envelope->status);
         write(file_fd, envelope->payload, envelope->payload_size);
         // write(1, envelope.payload, envelope.payload_size);
     }
-    write(1, "FINISH\n", 7);
     close(file_fd);
+    if (is_client)
+    {
+        write(1, "\33[2K\r100%\n", 10);
+        write(1, "finish!\n", 8);
+    }
     if (envelope->status != 20)
     {
         printf("payload: %s", envelope->payload);

@@ -75,18 +75,29 @@ int     remove_dots(char *path)
     return (1);
 }
 
-int     is_valid_path(char *path)
+int     is_valid_path(char *path, int is_directory, int is_file)
 {
     struct stat file_stat;
 
     if (ft_strncmp(g_root_path, path, ft_strlen(g_root_path)) != 0)
         return (0); // invalid path
-    if (stat(path, &file_stat) < 0)    
-        return (0); // cant read the stat :(
-    if ((S_ISDIR(file_stat.st_mode) == 0))
-        return (0); // is not a directory
-    if (!(file_stat.st_mode & S_IXUSR))
-        return (0); // you ave no rigths
+    if (is_directory || is_file)
+    {
+        if (stat(path, &file_stat) < 0)    
+            return (0); // cant read the stat :(
+    }
+    if (is_directory)
+    {
+        if ((S_ISDIR(file_stat.st_mode) == 0))
+            return (0); // is not a directory
+        if (!(file_stat.st_mode & S_IXUSR))
+            return (0); // you ave no rigths
+    }
+    else if (is_file)
+    {
+       if (!(file_stat.st_mode & S_IRUSR))
+            return (0); // you ave no rigths 
+    }
     printf("path is valid:, root_path: %s, asked path: %s\n", g_root_path, path);
     return (1);
 }
@@ -109,7 +120,7 @@ int go_to(char **path, char *dest)
     printf("old pah: %s\n", *path);
     new_path = path_join(*path, dest);
     remove_dots(new_path);
-    if (is_valid_path(new_path))
+    if (is_valid_path(new_path, 1, 0))
     {
         free(*path);
         *path = new_path;

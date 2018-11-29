@@ -80,5 +80,8 @@ void catch_sig(void);
 void *got_a_client(void *arg);
 int go_to(char **path, char *dest);
 void ft_strtsrfree(char **arg);
+int     is_valid_path(char *path, int is_directory, int is_file);
+char    *path_join(char *first, char *second);
+int     remove_dots(char *path);
 
 #endif

@@ -27,6 +27,6 @@ void *command_receive(t_client *client, char **path)
     }
     file_name[total_size] = '\0';
     printf("file -> %s\n", file_name);
-    receive_file(client->clientfd, file_name);
+    receive_file(client->clientfd, file_name, 0);
     return GOOD_RETURN;
 }

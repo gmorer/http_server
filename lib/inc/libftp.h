@@ -43,7 +43,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char		**ft_strsplit(char const *s, char c);
 char	*ft_strstr(const char *s1, const char *s2);
 char	*ft_strdup(const char *s1);
-int receive_file(int sock_fd, char *file_path);
-int send_file(int sock_fd, char *file_path);
+int receive_file(int sock_fd, char *file_path, int is_client);
+int send_file(int sock_fd, char *file_path, int is_client);
 
 #endif
