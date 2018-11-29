@@ -10,7 +10,9 @@ int fn_lls(int sock, char **argv)
     if (!(rep = opendir(".")))
         return (0);
     while ((dp = readdir(rep)))
-        printf("%s\n", dp->d_name);
+        printf("%s ", dp->d_name);
+    fflush(stdout);
+    write(1, "\n", 1);
     return (1);
 }
 

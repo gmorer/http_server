@@ -28,7 +28,6 @@ CFILES = send.c\
 			strchr.c\
 			strsub.c\
 			strcmp.c\
-			envelope.c\
 			strsplit.c\
 			strstr.c\
 			strdup.c\

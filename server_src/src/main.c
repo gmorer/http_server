@@ -51,7 +51,7 @@ int main(void)
 		ft_memset(client, 0, sizeof(client));
 
 		/*---accept a connection (creating a data pipe)---*/
-		printf("waiting for connection...\n");
+		printf("Listening...\n");
 		client->clientfd = accept(g_socket_fd, (struct sockaddr *)&(client->client_addr), &addrlen);
 		pthread_create(&tid, NULL, got_a_client, (void *)client);
 	}

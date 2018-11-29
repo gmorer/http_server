@@ -30,7 +30,6 @@ int send_file(int sock_fd, char *file_path, int is_client)
     ft_memset(&envelope, 0, sizeof(t_envelope));
     while ((read_ret = read(file_fd, envelope.payload, PAYLOAD_MAX_SIZE)) > 0)
     {
-        //printf("%d bytes readded\n", read_ret);
         if (is_client)
         {
             printf("\33[2K\r");
@@ -38,12 +37,11 @@ int send_file(int sock_fd, char *file_path, int is_client)
             fflush(stdout);
         }
         file_size -= read_ret;
-        // printf("size left: %zu\n", file_size);
         if (!send_multiple_response(sock_fd, envelope, read_ret, file_size))
         {
             close(file_fd);
-            write(1, "Error sending x4300\n", 20);
-            return (0); // error while sending what to do?
+            write(1, "Error while sending\n", 20);
+            return (0);
         }
     }
     if (is_client)
@@ -98,7 +96,6 @@ int receive_file(int sock_fd, char *file_path, int is_client)
         printf("cannot open the file\n");
         return (0); // cant open the file;
     }
-    write(1, "sending ready signal...\n", 25);
     if (send(sock_fd, envelope, get_envelope_size(0), 0) == -1)
     {
         write(1, "cant send ready signal\n", 23);
@@ -113,10 +110,7 @@ int receive_file(int sock_fd, char *file_path, int is_client)
             printf("%.2f%%", (float)(file_size - envelope->pending_size) * 100 / (float)file_size);
             fflush(stdout);
         }
-        // write(1, "1", 1);
-        // printf("envelope status:%d\n", envelope->status);
         write(file_fd, envelope->payload, envelope->payload_size);
-        // write(1, envelope.payload, envelope.payload_size);
     }
     close(file_fd);
     if (is_client)
@@ -126,8 +120,7 @@ int receive_file(int sock_fd, char *file_path, int is_client)
     }
     if (envelope->status != 20)
     {
-        printf("payload: %s", envelope->payload);
-        return (0); // something wrong happen server side :(
+        return (0);
     }
     return (1);
 }

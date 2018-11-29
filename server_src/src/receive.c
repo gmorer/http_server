@@ -7,7 +7,6 @@ void *command_receive(t_client *client, char **path)
     size_t      path_len;
 
     path_len = ft_strlen(*path);
-    printf("RECEIVE\n");
     if ((*path)[path_len - 1] != '/')
     {
         total_size = path_len + 1 + client->envelope.payload_size;
@@ -26,7 +25,6 @@ void *command_receive(t_client *client, char **path)
         ft_memcpy(file_name + path_len, client->envelope.payload, client->envelope.payload_size);
     }
     file_name[total_size] = '\0';
-    printf("file -> %s\n", file_name);
     receive_file(client->clientfd, file_name, 0);
     return GOOD_RETURN;
 }

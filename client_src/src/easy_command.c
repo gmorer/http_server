@@ -27,13 +27,15 @@ int fn_help(int sock, char **argv)
 {
     (void)sock;
     (void)argv;
-    write(1, "Available command:\n\
+    printf("Available command:\n\
     exit: quit the program\n\
-    ls: list entity in the current directory\n\
+    ls: list entity in the current directory of the server\n\
     cd [DIRECTORY]: change the current directory on the server\n\
-    pwd: print the path of the current directory\n\
+    pwd: print the path of the current directory of the server\n\
     get: [FILENAME]: download the file\n\
     put: [FILENAME]: uplaud the file to the server\n\
-    ", 19 + 23 + 41 + 59 + 45 + 34 + 47 + 25);
+    lls: list entity in the current local directory\n\
+    lcd [DIRECTORY]: change the current local directory\n\
+    lpwd: print the path of the current local directory\n");
     return (1);
 }

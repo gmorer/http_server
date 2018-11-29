@@ -25,7 +25,6 @@ char    *path_join(char *first, char *second)
     rslt[first_len] = '/';
     ft_memcpy(rslt + first_len + 1, second + (second[0] == '/'), second_len + (second[0] == '/' ? -1 : 0)
         + (second[second_len - 1] == '/' ? -1 : 0));
-    printf("new_path: %s\n", rslt);
     return (rslt);
 }
 
@@ -71,7 +70,6 @@ int     remove_dots(char *path)
     }
     ft_strtsrfree(split);
     path[head] = '\0';
-    printf("\npath: %s\n", path);
     return (1);
 }
 
@@ -98,7 +96,6 @@ int     is_valid_path(char *path, int is_directory, int is_file)
        if (!(file_stat.st_mode & S_IRUSR))
             return (0); // you ave no rigths 
     }
-    printf("path is valid:, root_path: %s, asked path: %s\n", g_root_path, path);
     return (1);
 }
 
@@ -107,17 +104,12 @@ int go_to(char **path, char *dest)
 {
     char *new_path;
 
-    printf("DEST::: %s\n", dest);
     if (!path || !*path || !dest)
     {
-        printf("path?: %d\n", !!path);
         return (0);
-        printf("Inalid argument: path: %d, *path: %s, dest: %s\n", !!path, *path, dest);
-        return (0); // invalid argument
     }
     if (ft_strcmp(dest, ".") == 0)
         return (1);
-    printf("old pah: %s\n", *path);
     new_path = path_join(*path, dest);
     remove_dots(new_path);
     if (is_valid_path(new_path, 1, 0))

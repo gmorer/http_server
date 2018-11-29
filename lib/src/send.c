@@ -42,7 +42,6 @@ int ask_server(int sock, int status, char *payload, size_t payload_len)
     }
     // TODO multiple socket response
     res_len = recv(sock, buff, sizeof(t_envelope), 0);
-    // fill_envelope(buff, &request);
     write(1, request->payload, request->payload_size);
     if (request->payload[request->payload_size - 1] != '\n')
         write(1, "\n", 1);
@@ -53,18 +52,14 @@ int send_multiple_response(int fd, t_envelope envelope, size_t actual_size, size
 {
     size_t      response_length;
 
-    // printf("sending %zu bytes\n", actual_size);
     envelope.payload_size = actual_size;
     envelope.pending_size = pending_size;
     envelope.status = 21;
     response_length = get_envelope_size(actual_size);
-    // write(1, "sending payload........\n", 24);
     if (send(fd, &envelope, response_length, 0) == -1)
         return (0);
-    // write(1, "waiting for response...\n", 24);
     if (recv(fd, &envelope, sizeof(t_envelope), 0) == -1)
         return (0);
-    // write(1, "RESPONSE Ok\n", 12);
     return (1);
 }
 
@@ -76,27 +71,17 @@ int send_response(int fd, char *buffer, size_t buffer_length)
     size_t response_length;
 
     index = 0;
-    write(1, buffer, buffer_length);
-    write(1, "\n", 1);
-    printf("sending %zu bytes\n", buffer_length);
     while (index < buffer_length)
     {
         copied = buffer_length - index < PAYLOAD_MAX_SIZE ? buffer_length - index : PAYLOAD_MAX_SIZE;
-        printf("size copied: %zu\n", copied);
         ft_memcpy(envelope.payload, buffer + index, copied);
         envelope.payload_size = copied;
         envelope.pending_size = buffer_length - (index + copied); // should be zero for the last one
         envelope.status = 20;
         response_length = get_envelope_size(copied);
-        // printf("payload length: %zu\n", envelope.payload_size);
         if (send(fd, &envelope, response_length, 0) == -1)
-        {
-            // printf("Error cantsend to the socket");
             return (0);
-        }
         index += copied;
-        // printf("index: %zu, buffer_length: %zu\n", index, buffer_length);
     }
-    // printf("returned after sending");
     return (1);
 }
