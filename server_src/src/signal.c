@@ -1,34 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/11/30 13:36:22 by gmorer            #+#    #+#             */
+/*   Updated: 2018/11/30 13:36:27 by gmorer           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <signal.h>
 #include "../inc/iosocket.h"
 
-int g_socket_fd;
+int	g_socket_fd;
 
-void quit(int sig)
+void	quit(int sig)
 {
 	(void)sig;
-	// printf("Terminate with signal %d\n", sig);
-	// printf("Terminate with signal\n");
 	close(g_socket_fd);
 	exit(1);
 }
 
-void catch_sig(void)
+void	catch_sig(void)
 {
 	signal(SIGINT, &quit);
 	signal(SIGABRT, &quit);
 	signal(SIGBUS, &quit);
-	// signal(SIGALRM, &quit);
-	// signal(SIGFPE, &quit);
-	// signal(SIGHUP, &quit);
 	signal(SIGILL, &quit);
 	signal(SIGINT, &quit);
 	signal(SIGKILL, &quit);
-	//signal(SIGPIPE, &quit);
-	//signal(SIGPOLL, &quit);
-	// signal(SIGPROF, &quit);
-	// signal(SIGSEGV, &quit);
-	// signal(SIGSYS, &quit);
 	signal(SIGTERM, &quit);
 	signal(SIGTRAP, &quit);
-	return;
+	return ;
 }
