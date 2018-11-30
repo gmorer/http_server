@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2018/11/13 12:40:14 by gmorer           ###   ########.fr        #
+#    Updated: 2018/11/30 15:45:36 by gmorer           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,8 @@ clean:
 	make -C $(LIB_DIR) clean
 	make -C $(SERVER_DIR) clean
 	make -C $(CLIENT_DIR) clean
+	rm $(SERVER_DIR)/lib
+	rm $(CLIENT_DIR)/lib
 
 fclean: clean
 	rm -f $(SERVER_NAME) $(CLIENT_NAME) $(SERVER_DIR)/$(LIB_NAME)# $(CLIENT_DIR)/$(LIB_NAME)

@@ -6,12 +6,11 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:35:10 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:35:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:47:12 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/iosocket.h"
-#include "../inc/command_array.h"
 
 #define INVALID_RESPONSE "Invalid protocol, protocol on this server: FT_FTP1"
 #define INVALID_RESPONSE_LEN 49
@@ -27,7 +26,13 @@ static void	*invalid_command(t_client *client, char **path)
 
 static void	*command_dispatcher(int ftp_code, t_client *client, char **path)
 {
-	static const t_command_fun	command[COMMAND_MAX] = INIT_ARRAY;
+	static const t_command_fun	command[COMMAND_MAX] = {
+	&command_ls,
+	&command_cd,
+	&command_pwd,
+	&command_send,
+	&command_receive
+	};
 
 	return (command[ftp_code](client, path));
 }

@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:34:51 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:34:55 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:37:10 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 
 # define BUFF_SIZE 4096
 # define SOCKET_MAX_SIZE 1300
-# define COMMAND_MAX 50
+# define COMMAND_MAX 5
 # define GOOD_RETURN ((void*)1)
 
 typedef struct			s_client

@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:24:25 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:24:35 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:40:33 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	fn_get(int sock, char **argv)
 		return (0);
 	}
 	ft_memset(&envelope, 0, sizeof(t_envelope));
-	envelope.status = 31;
+	envelope.status = 3;
 	envelope.pending_size = 0;
 	envelope.payload_size = ft_strlen(argv[1]) + 1;
 	ft_memcpy(&(envelope.payload), argv[1], ft_strlen(argv[1]));

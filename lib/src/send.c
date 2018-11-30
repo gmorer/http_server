@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:10:02 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:13:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:38:19 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 size_t	get_envelope_size(size_t payload_size)
 {
-	static const size_t	struct_size;
+	static size_t	struct_size;
 
 	struct_size = sizeof(t_envelope) - sizeof(char) * PAYLOAD_MAX_SIZE;
 	return (struct_size + (sizeof(char) * payload_size));

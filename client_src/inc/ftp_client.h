@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:20:57 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:37:49 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:50:17 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,6 @@ typedef struct	s_command
 }				t_command;
 
 # define COMMAND_TAB_LEN 10
-# define COMMAND_TAB   \
-{                      \
-	{"exit", fn_exit}, \
-	{"ls", fn_ls},     \
-	{"cd", fn_cd},     \
-	{"pwd", fn_pwd},   \
-	{"get", fn_get},   \
-	{"put", fn_put},   \
-	{"help", fn_help}, \
-	{"lls", fn_lls},   \
-	{"lcd", fn_lcd},   \
-	{"lpwd", fn_lpwd}, \
-}
 
 char			**split_args(char const *s);
 int				main_loop(int sock);

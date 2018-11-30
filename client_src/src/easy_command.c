@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:29:33 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:30:16 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:39:50 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	fn_ls(int sock, char **argv)
 {
 	(void)argv;
-	return (ask_server(sock, 21, NULL, 0));
+	return (ask_server(sock, 0, NULL, 0));
 }
 
 int	fn_cd(int sock, char **argv)
@@ -25,13 +25,13 @@ int	fn_cd(int sock, char **argv)
 		write(2, "Usage: cd [DIRECTORY]\n", 22);
 		return (0);
 	}
-	return (ask_server(sock, 22, argv[1], ft_strlen(argv[1])));
+	return (ask_server(sock, 1, argv[1], ft_strlen(argv[1])));
 }
 
 int	fn_pwd(int sock, char **argv)
 {
 	(void)argv;
-	return (ask_server(sock, 23, NULL, 0));
+	return (ask_server(sock, 2, NULL, 0));
 }
 
 int	fn_help(int sock, char **argv)

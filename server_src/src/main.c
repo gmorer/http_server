@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:35:34 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:35:35 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/11/30 15:42:42 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ static int	main_loop(void)
 	pthread_t			tid;
 
 	addrlen = sizeof(struct sockaddr_in);
+	printf("Listening...\n");
 	while (1)
 	{
 		client = malloc(sizeof(t_client));
 		ft_memset(client, 0, sizeof(client));
-		printf("Listening...\n");
 		client->clientfd = accept(g_socket_fd,
 				(struct sockaddr *)&(client->client_addr), &addrlen);
 		pthread_create(&tid, NULL, got_a_client, (void *)client);
