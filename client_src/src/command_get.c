@@ -27,6 +27,12 @@ int	fn_get(int sock, char **argv)
 	envelope.payload_size = ft_strlen(argv[1]) + 1;
 	ft_memcpy(&(envelope.payload), argv[1], ft_strlen(argv[1]));
 	send(sock, &envelope, get_envelope_size(ft_strlen(argv[1]) + 1), 0);
+	recv(sock, &envelope, sizeof(t_envelope), 0);
+	if (envelope.status == 40)
+	{
+		write(2, "No file.\n", 9);
+		return (0);
+	}
 	receive_file(sock, argv[1], 1);
 	return (1);
 }

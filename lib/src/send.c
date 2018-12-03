@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:10:02 by gmorer            #+#    #+#             */
-/*   Updated: 2018/12/03 11:01:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 14:11:50 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,25 @@ size_t	get_envelope_size(size_t payload_size)
 
 int		ask_server(int sock, int status, char *payload, size_t payload_len)
 {
-	t_envelope	*request;
-	char		buff[sizeof(t_envelope)];
+	t_envelope	request;
 	size_t		res_len;
 
-	request = (t_envelope*)buff;
 	if (payload_len > PAYLOAD_MAX_SIZE)
 		return (0);
-	ft_memset(request, 0, sizeof(t_envelope));
-	request->status = status;
-	request->payload_size = payload_len;
+	ft_memset(&request, 0, sizeof(t_envelope));
+	request.status = status;
+	request.payload_size = payload_len;
 	if (!payload)
 		payload_len = 0;
 	if (payload_len)
-		ft_memcpy(request->payload, payload, payload_len);
-	if (send(sock, request, get_envelope_size(payload_len), 0) == -1)
+		ft_memcpy(request.payload, payload, payload_len);
+	if (send(sock, &request, get_envelope_size(payload_len), 0) == -1)
 		return (write(2, "Can't send this request.\n", 25) ? 0 : 0);
-	res_len = recv(sock, buff, sizeof(t_envelope), 0);
-	if (request->payload[0] && request->payload_size)
+	res_len = recv(sock, &request, sizeof(t_envelope), 0);
+	if (request.payload[0] && request.payload_size)
 	{
-		write(1, request->payload, request->payload_size);
-		if (request->payload[request->payload_size - 1] != '\n')
+		write(1, request.payload, request.payload_size);
+		if (request.payload[request.payload_size - 1] != '\n')
 			write(1, "\n", 1);
 	}
 	else

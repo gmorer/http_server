@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:08:07 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:08:09 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 14:19:51 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,7 @@ char			*ft_strstr(const char *s1, const char *s2);
 char			*ft_strdup(const char *s1);
 int				receive_file(int sock_fd, char *file_path, int is_client);
 int				send_file(int sock_fd, char *file_path, int is_client);
+int				file_error(int is_client);
+int				send_error(int sockfd);
 
 #endif

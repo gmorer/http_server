@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:09:10 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:09:43 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 14:23:40 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 void	socket_error_msg(void)
 {
 	write(2, "Socket error.\n", 14);
+}
+
+int		file_error(int is_client)
+{
+	if (is_client)
+		write(1, "No file.\n", 9);
+	return (0);
+}
+
+int		send_error(int sockfd)
+{
+	t_envelope	envelope;
+
+	envelope.status = 40;
+	send(sockfd, &envelope, get_envelope_size(0), 0);
+	return (0);
 }
 
 int		send_success(int fd, char *message, size_t length)

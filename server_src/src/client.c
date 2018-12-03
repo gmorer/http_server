@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:35:10 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 15:47:12 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 14:02:21 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		*got_a_client(void *arg)
 					sizeof(t_envelope), 0)))
 	{
 		if (!response(client, &path))
-			break ;
+			write(1, "bad retur\n", 11);
 		ft_memset((void*)&(client->envelope), 0, sizeof(t_envelope));
 	}
 	close(client->clientfd);
