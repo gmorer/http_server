@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:10:02 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 15:38:19 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:01:09 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		ask_server(int sock, int status, char *payload, size_t payload_len)
 	size_t		res_len;
 
 	request = (t_envelope*)buff;
-	fflush(stdout);
 	if (payload_len > PAYLOAD_MAX_SIZE)
 		return (0);
 	ft_memset(request, 0, sizeof(t_envelope));
@@ -44,9 +43,14 @@ int		ask_server(int sock, int status, char *payload, size_t payload_len)
 	if (send(sock, request, get_envelope_size(payload_len), 0) == -1)
 		return (write(2, "Can't send this request.\n", 25) ? 0 : 0);
 	res_len = recv(sock, buff, sizeof(t_envelope), 0);
-	write(1, request->payload, request->payload_size);
-	if (request->payload[request->payload_size - 1] != '\n')
-		write(1, "\n", 1);
+	if (request->payload[0] && request->payload_size)
+	{
+		write(1, request->payload, request->payload_size);
+		if (request->payload[request->payload_size - 1] != '\n')
+			write(1, "\n", 1);
+	}
+	else
+		write(1, "Empty response.\n", 16);
 	return (1);
 }
 

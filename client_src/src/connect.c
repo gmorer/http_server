@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:25:45 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 13:29:22 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 09:47:13 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	connect_to_server(int sock, char *address, int port)
 		printf("IP: %s\n", inet_ntoa(client.sin_addr));
 		if (connect(sock, (struct sockaddr *)&client, sizeof(client)) == -1)
 		{
-			perror("connect");
 			addr_info = addr_info->ai_next;
 			continue ;
 		}
@@ -70,7 +69,6 @@ int	connect_to_server(int sock, char *address, int port)
 	ft_memcpy(&(client.sin_addr), server->h_addr_list[0], server->h_length);
 	if (connect(sock, (struct sockaddr *)&client, sizeof(client)) == -1)
 	{
-		perror("connect");
 		return (0);
 	}
 	return (1);

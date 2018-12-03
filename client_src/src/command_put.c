@@ -6,7 +6,7 @@
 /*   By: gmorer <gmorer@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:24:55 by gmorer            #+#    #+#             */
-/*   Updated: 2018/11/30 15:40:43 by gmorer           ###   ########.fr       */
+/*   Updated: 2018/12/03 11:00:49 by gmorer           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ int	file_ok(char *file)
 
 	if (stat(file, &buf) == -1)
 	{
-		write(2, "Can't read the file information.\n", 32);
+		write(2, "Can't read the file information.\n", 33);
 		return (0);
 	}
 	if (!(buf.st_mode & S_IRUSR))
 	{
-		write(2, "Invalid file permission.\n", 24);
+		write(2, "Invalid file permission.\n", 25);
 		return (0);
 	}
 	if (!(S_ISREG(buf.st_mode)))
 	{
-		write(2, "This is not a file\n", 18);
+		write(2, "This is not a file\n", 19);
 		return (0);
 	}
 	return (1);
@@ -50,7 +50,6 @@ int	fn_put(int sock, char **argv)
 	envelope.pending_size = 0;
 	envelope.payload_size = ft_strlen(argv[1]) + 1;
 	ft_memcpy(&(envelope.payload), argv[1], ft_strlen(argv[1]));
-	fflush(stdout);
 	send(sock, &envelope, get_envelope_size(ft_strlen(argv[1]) + 1), 0);
 	send_file(sock, argv[1], 1);
 	return (1);
