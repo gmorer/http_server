@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = socket
+NAME = server
 
 CC = gcc
 
@@ -23,7 +23,8 @@ CPATH = src/
 CFILES = \
 	main.c \
 	signal.c \
-	client.c
+	client.c \
+	parser_cb.c
 
 OPATH = obj/
 
@@ -31,28 +32,35 @@ OFILES = $(CFILES:.c=.o)
 
 OBJ = $(addprefix $(OPATH), $(OFILES))
 
-HPATH = inc/
+HPATH = inc/ \
+		http_parser/
 
 HFILES = \
-	inc/iosocket.h
+	inc/server.h \
+	http_parser/http_parser.h
 
-INC = $(addprefix -I , $(HPATH))
+INC = $(addprefix -I./, $(HPATH))
 
 .PHONY: all install clean fclean re
 
-all: $(NAME)
+all: http-parser $(NAME)
 
 $(NAME): $(OPATH) $(OBJ)
-	$(CC) $(CFLAGS) $(LIBFLAG) $(OBJ) -o $(NAME)
+	$(CC) $(LIBFLAG) $(CFLAGS) $(OBJ) obj/http_parser.o -o $(NAME)
 
 $(OPATH):
 	mkdir -p $(OPATH)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(INC) $(CFLAGS) -c -o $@ $<
+
+http-parser: $(OPATH)
+	cd http_parser
+	cc  -I./http_parser/ -DHTTP_PARSER_STRICT=1 -Wall -Wextra -Werror -O0 -g -c http_parser/http_parser.c -o obj/http_parser.o
 
 clean:
 	rm -f $(OBJ)
+	rm -rf obj/http_parser.o
 
 fclean: clean
 	rm -f $(NAME)

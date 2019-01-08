@@ -1,12 +1,12 @@
 #include <signal.h>
-#include "../inc/iosocket.h"
+#include "server.h"
 
-int g_socket_fd;
+int g_socket_sd;
 
 void quit(int sig)
 {
 	printf("Terminate with signal %d\n", sig);
-	close(g_socket_fd);
+	close(g_socket_sd);
 	exit(1);
 }
 
