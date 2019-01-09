@@ -22,7 +22,6 @@ void catch_sig( void )
 	signal(SIGINT, &quit);
 	signal(SIGKILL, &quit);
 	//signal(SIGPIPE, &quit);
-	signal(SIGPOLL, &quit);
 	signal(SIGPROF, &quit);
 	signal(SIGSEGV, &quit);
 	signal(SIGSYS, &quit);
