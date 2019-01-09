@@ -4,6 +4,20 @@
 
 int g_socket_sd;
 
+static void free_inside_client(t_client *client)
+{
+	int	i;
+
+	i = 0;
+	while (i < client->private.header_line)
+	{
+		free(client->private.headers[i].field);
+		free(client->private.headers[i].value);
+		i += 1;
+	}
+	return ;
+}
+
 static void *respond(t_client *client)
 {
 	char	body[] = "Hello world!";
@@ -59,6 +73,7 @@ void	*got_a_client(void *arg)
 		if (nparsed != client->req_len)
 			printf("Error while parsing http request.\n");
 		respond(client);
+		free_inside_client(client);
 	}
 	close(client->clientfd);
 	printf("Client disconnected!");
