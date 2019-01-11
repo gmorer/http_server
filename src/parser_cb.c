@@ -8,8 +8,7 @@ int url_callback(http_parser *parser, const char *at, size_t length)
 	t_client *client;
 
 	client = parser->data;
-	client->buffer[at - client->buffer + length] = 0;
-	client->url = at;
+	client->url = strndup(at, length);
 	return 0;
 }
 
@@ -69,8 +68,38 @@ int body_callback(http_parser *parser, const char *at, size_t length)
 	t_client *client;
 
 	client = parser->data;
-	client->body = at;
+	client->body = (char*)at; // REDO THAT SINCE WE REALLOC
 	client->body_len = length;
 	client->private.buffer[at - client->private.buffer + length] = '\0';
+	return 0;
+}
+
+int msg_begin_callback(http_parser *parser)
+{
+	t_client *client;
+
+	client = parser->data;
+	client->private.message_complete = 0;
+	client->private.header_complete = 0;
+	write(1, "\n\n\n\n\nBEGIN\n\n\n\n\n", 15);
+	return 0;
+}
+
+int msg_complet_callback(http_parser *parser)
+{
+	t_client *client;
+
+	client = parser->data;
+	client->private.message_complete = 1;
+	write(1, "\n\n\n\n\nEND\n\n\n\n\n", 13);
+	return 0;
+}
+
+int header_complete_callback(http_parser *parser)
+{
+	t_client *client;
+
+	client = parser->data;
+	client->private.header_complete = 1;
 	return 0;
 }
