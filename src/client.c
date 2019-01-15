@@ -37,7 +37,7 @@ static void *respond(t_client *client)
 		printf("%s : %s\n", client->private.headers[i].field, client->private.headers[i].value);
 	write(1, "Body:\n", 6);
 	write(1, client->body, client->body_len);
-	write(1, "=====  END  =====\n", 18);
+	printf("\nmethod: %d\n=====  END  =====\n", client->method);
 	if (send(client->clientfd, header, strlen(header), 0) == -1 ||
 		send(client->clientfd, body, strlen(body), 0) == -1)
 		printf("cant send\n");
@@ -63,7 +63,7 @@ void	*got_a_client(void *arg)
 	settings.on_header_field = header_field_callback;
 	settings.on_header_value = header_value_callback;
 	settings.on_body = body_callback;
-	//settings.on_header_field = header_callback;
+	settings.on_headers_complete = header_complet_callback;
 	http_parser_init(parser, HTTP_REQUEST);
 	parser->data = client;
 	printf("%s:%d connected\n", inet_ntoa(client->client_addr.sin_addr), ntohs(client->client_addr.sin_port));

@@ -9,6 +9,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
 #include "http_parser.h"
+#include "http_method.h"
 
 # define BUFF_SIZE 80*1024
 # define MAX_HEADER 100
@@ -38,6 +39,7 @@ typedef struct			s_client
 	const char			*body;
 	size_t				body_len;
 	struct private		private;
+	unsigned int		method;
 }						t_client;
 
 extern int g_socket_sd;
@@ -50,5 +52,6 @@ int url_callback(http_parser *parser, const char *at, size_t length);
 int header_field_callback(http_parser *parser, const char *at, size_t length);
 int header_value_callback(http_parser *parser, const char *at, size_t length);
 int body_callback(http_parser *parser, const char *at, size_t length);
+int	header_complet_callback(http_parser *parser);
 
 #endif

@@ -13,6 +13,15 @@ int url_callback(http_parser *parser, const char *at, size_t length)
 	return 0;
 }
 
+int	header_complet_callback(http_parser *parser)
+{
+	t_client *client;
+
+	client = parser->data;
+	client->method = parser->method;
+	return 0;
+}
+
 /*
  * Parsing the header, from the example: https://gist.github.com/ry/155877
  */

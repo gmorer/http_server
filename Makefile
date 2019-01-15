@@ -37,6 +37,7 @@ HPATH = inc/ \
 
 HFILES = \
 	inc/server.h \
+	inc/http_method.h \
 	http_parser/http_parser.h
 
 INC = $(addprefix -I./, $(HPATH))
