@@ -24,6 +24,8 @@ CFILES = \
 	main.c \
 	signal.c \
 	client.c \
+	utils.c \
+	http_errors.c \
 	parser_cb.c
 
 OPATH = obj/
@@ -38,6 +40,8 @@ HPATH = inc/ \
 HFILES = \
 	inc/server.h \
 	inc/http_method.h \
+	inc/utils.h \
+	inc/http_errors.h \
 	http_parser/http_parser.h
 
 INC = $(addprefix -I./, $(HPATH))
