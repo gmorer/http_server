@@ -143,7 +143,13 @@ void	*got_a_client(void *arg)
 		if (got_a_message(client, parser))
 			respond(client);
 		free_inside_client(client);
+		if (!(client->private.buffer = malloc(BUFF_SIZE)))
+		{
+			ALLOCATION_ERROR;
+			return NULL;
+		}
 	}
+	free(client->private.buffer);
 	close(client->clientfd);
 	printf("Client disconnected!");
 	free(client);

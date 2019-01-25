@@ -77,7 +77,7 @@ int body_callback(http_parser *parser, const char *at, size_t length)
 	t_client *client;
 
 	client = parser->data;
-	client->body = (char*)at; // REDO THAT SINCE WE REALLOC
+	client->body = (char*)(at - client->private.buffer); // just get the offset if I ave to realloc  after
 	client->body_len = length;
 	client->private.buffer[at - client->private.buffer + length] = '\0';
 	return 0;
@@ -100,6 +100,7 @@ int msg_complet_callback(http_parser *parser)
 
 	client = parser->data;
 	client->private.message_complete = 1;
+	client->body = client->private.buffer + (unsigned long)client->body;
 	write(1, "\n\n\n\n\nEND\n\n\n\n\n", 13);
 	return 0;
 }
