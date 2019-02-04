@@ -26,7 +26,8 @@ CFILES = \
 	client.c \
 	utils.c \
 	http_errors.c \
-	parser_cb.c
+	parser_cb.c \
+	server.c
 
 OPATH = obj/
 

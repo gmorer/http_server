@@ -14,6 +14,7 @@
 # include "http_errors.h"
 
 # define BUFF_SIZE 80*1024
+# define DEFAULT_PORT 8080
 # define MAX_HEADER 100
 # define ALLOCATION_ERROR (write(2, "Allocation error\n", 17))
 # define MAX_REQUEST_SIZE 1024 * 1024 * 5 // 5 MegaBytes
@@ -41,9 +42,8 @@ typedef struct			s_client
 	int					clientfd;
 	struct	sockaddr_in	client_addr;
 	ssize_t				req_len;
-	char				*buffer;
 	char				*url;
-	char				*body; // NEED TO REDO THAT SINCE I CAN REALLOC THE BUFFER
+	char				*body;
 	size_t				body_len;
 	struct private		private;
 	unsigned int		method;
@@ -53,6 +53,9 @@ extern int g_socket_sd;
 
 void catch_sig(void);
 void *got_a_client(void *arg);
+
+int	init_server(int port);
+void launch_server(void);
 
 /* Parser callback */
 int url_callback(http_parser *parser, const char *at, size_t length);
