@@ -18,6 +18,7 @@ static void free_inside_client(t_client *client)
 			free(client->private.headers[i].value);
 		i += 1;
 	}
+	if (client->params) free(client->params);
 	if (client->url) free(client->url);
 	if (client->private.buffer) free(client->private.buffer);
 	// Do not bzero the first 2 fields of client (clientfd and client_addr)
@@ -25,19 +26,15 @@ static void free_inside_client(t_client *client)
 	return ;
 }
 
-static void *respond(t_client *client)
+static void *respond(t_client *client, t_response response)
 {
-	char	body[] = "Hello world!";
 	char	*header;
 	int	i;
-	size_t	body_len;
 
 	i = 0;
-	body_len = strlen(body);
-	header = malloc(snprintf(NULL, 0, HEADER, body_len) + 1);
-	sprintf(header, HEADER, body_len);
-	write(1, "== NEW REQUEST ==\n", 18);
-	write(1, "url: ", 5);
+	header = malloc(snprintf(NULL, 0, HEADER, response.body_len) + 1);
+	sprintf(header, HEADER, response.body_len);
+	write(1, "== NEW REQUEST ==\nurl: ", 23);
 	write(1, client->url, strlen(client->url));
 	write(1, "\n", 1);
 	while (i++ < client->private.header_line)
@@ -45,9 +42,14 @@ static void *respond(t_client *client)
 	write(1, "Body:\n", 6);
 	write(1, client->body, client->body_len);
 	printf("\nmethod: %d\n=====  END  =====\n", client->method);
+	write(1, "== RESPONSE ==\nheader:\n", 23);
+	write(1, header, strlen(header));
+	write(1, "body:\n", 6);
+	write(1, response.body, response.body_len);
+	write(1, "\n== END ==\n", 11);
 	if (send(client->clientfd, header, strlen(header), 0) == -1 ||
-		send(client->clientfd, body, strlen(body), 0) == -1)
-		printf("cant send\n");
+		send(client->clientfd, response.body, response.body_len, 0) == -1)
+		dprintf(2, "Can't send\n");
 	return (NULL);
 }
 
@@ -141,10 +143,7 @@ void	*got_a_client(void *arg)
 	while ((client->req_len = recv(client->clientfd, client->private.buffer, BUFF_SIZE, 0)))
 	{
 		if (got_a_message(client, parser))
-		{
-			execute_response(client, keep_endpoints(NULL));
-			respond(client);
-		}
+			respond(client, execute_response(client, keep_endpoints(NULL)));
 		free_inside_client(client);
 		if (!(client->private.buffer = malloc(BUFF_SIZE)))
 		{

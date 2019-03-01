@@ -32,7 +32,7 @@ int compil_regex(t_endpoint *endpoints)
 static t_response	malloc_error()
 {
 	ALLOCATION_ERROR;
-	return (response_error("Allocation error.", 500)); // other error pls;
+	return (response_error("Allocation error.", 500));
 }
 
 t_response	execute_response(t_client *client, t_endpoint *endpoints)

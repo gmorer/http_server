@@ -56,7 +56,7 @@ typedef struct			s_client
 typedef struct			s_response
 {
 	char	*body;
-	size_t	boy_len;
+	size_t	body_len;
 	int		http_code;
 	// header
 }						t_response;

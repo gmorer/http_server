@@ -90,7 +90,7 @@ int msg_begin_callback(http_parser *parser)
 	client = parser->data;
 	client->private.message_complete = 0;
 	client->private.header_complete = 0;
-	write(1, "\n\n\n\n\nBEGIN\n\n\n\n\n", 15);
+	//write(1, "\n\n\n\n\nBEGIN\n\n\n\n\n", 15);
 	return 0;
 }
 
@@ -101,7 +101,7 @@ int msg_complet_callback(http_parser *parser)
 	client = parser->data;
 	client->private.message_complete = 1;
 	client->body = client->private.buffer + (unsigned long)client->body;
-	write(1, "\n\n\n\n\nEND\n\n\n\n\n", 13);
+	//write(1, "\n\n\n\n\nEND\n\n\n\n\n", 13);
 	return 0;
 }
 

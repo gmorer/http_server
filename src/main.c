@@ -14,7 +14,7 @@ t_response	hello_world(t_client *client)
 		index += 1;
 	}
 	printf("Hello world function\n");
-	return ((t_response){NULL, 0, 0});
+	return ((t_response){"Hello world.", 12, 200});
 }
 
 int main(int argc, char **argv)
