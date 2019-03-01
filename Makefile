@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2016/11/22 11:58:26 by gmorer           ###   ########.fr        #
+#    Updated: 2019/03/01 19:10:58 by tet              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = server
 
 CC = gcc
 
-CFLAGS = -Werror -Wall -Wextra -g
+CFLAGS = -g # -Werror -Wall -Wextra
 
 LIBFLAG = -lpthread
 
@@ -27,7 +27,8 @@ CFILES = \
 	utils.c \
 	http_errors.c \
 	parser_cb.c \
-	server.c
+	server.c \
+	regex.c
 
 OPATH = obj/
 

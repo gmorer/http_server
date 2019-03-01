@@ -2,9 +2,9 @@
 
 int g_socket_sd;
 
-int	init_server(int port) {
-	struct sockaddr_in				server;
-	int								true;
+int	init_server(int port, t_endpoint *endpoints) {
+	struct sockaddr_in	server;
+	int			true;
 
 	if ((g_socket_sd = socket(AF_INET, SOCK_STREAM, 0)) < 0 )
 		return (0);
@@ -14,7 +14,7 @@ int	init_server(int port) {
 	server.sin_port = htons(port ? port : DEFAULT_PORT);
 	server.sin_addr.s_addr = INADDR_ANY;
 	/*---Assign a port number to the socket---*/
-    if (bind(g_socket_sd, (struct sockaddr*)&server, sizeof(server)) != 0 )
+	if (bind(g_socket_sd, (struct sockaddr*)&server, sizeof(server)) != 0 )
 	{
 		perror("socket--bind");
 		return (0);
@@ -23,7 +23,7 @@ int	init_server(int port) {
 	true = 1;
 	if (setsockopt(g_socket_sd, SOL_SOCKET, SO_REUSEADDR, &true, sizeof(g_socket_sd)) == -1)
 	{
-    	perror("Setsockopt");
+		perror("Setsockopt");
 		return(0);
 	}
 	/*---Make it a "listening socket"---*/
@@ -32,6 +32,9 @@ int	init_server(int port) {
 		perror("socket--listen");
 		return (0);
 	}
+	if (!compil_regex(endpoints))
+		return (0);
+	keep_endpoints(endpoints);
 	return (1);
 }
 

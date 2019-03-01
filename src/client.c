@@ -29,7 +29,7 @@ static void *respond(t_client *client)
 {
 	char	body[] = "Hello world!";
 	char	*header;
-	int		i;
+	int	i;
 	size_t	body_len;
 
 	i = 0;
@@ -53,7 +53,11 @@ static void *respond(t_client *client)
 
 int		got_a_message(t_client *client, http_parser *parser)
 {
-	ssize_t								nparsed;
+	ssize_t				nparsed;
+	size_t				new_alloc_size;
+	char				*content_length_str;
+	size_t				content_length;
+	char				*tmp;
 	static const http_parser_settings	settings = {
 		.on_url = url_callback,
 		.on_header_field = header_field_callback,
@@ -63,10 +67,6 @@ int		got_a_message(t_client *client, http_parser *parser)
 		.on_message_complete = msg_complet_callback,
 		.on_headers_complete = header_complete_callback
 	};
-	size_t								new_alloc_size;
-	char								*content_length_str;
-	size_t								content_length;
-	char								*tmp;
 
 	(void)new_alloc_size;
 	if (client->req_len == -1)
@@ -141,7 +141,10 @@ void	*got_a_client(void *arg)
 	while ((client->req_len = recv(client->clientfd, client->private.buffer, BUFF_SIZE, 0)))
 	{
 		if (got_a_message(client, parser))
+		{
+			execute_response(client, keep_endpoints(NULL));
 			respond(client);
+		}
 		free_inside_client(client);
 		if (!(client->private.buffer = malloc(BUFF_SIZE)))
 		{

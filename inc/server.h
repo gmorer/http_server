@@ -8,10 +8,12 @@
 #include <string.h> //strlen
 #include <sys/socket.h>
 #include <arpa/inet.h> //inet_addr
+#include <sys/types.h>
+#include <regex.h>
 #include "http_parser.h"
 #include "http_method.h"
-# include "utils.h"
-# include "http_errors.h"
+#include "utils.h"
+#include "http_errors.h"
 
 # define BUFF_SIZE 80*1024
 # define DEFAULT_PORT 8080
@@ -49,12 +51,30 @@ typedef struct			s_client
 	unsigned int		method;
 }						t_client;
 
+typedef struct			s_response
+{
+	char	*body;
+	size_t	boy_len;
+	int		http_code;
+	// header
+}						t_response;
+
+typedef t_response (endpoint_action)(t_client *client);
+
+typedef struct		s_endpoint
+{
+	char			*url;
+	size_t			args_no;
+	endpoint_action	*action;
+	regex_t			comp_url;
+}					t_endpoint;
+
 extern int g_socket_sd;
 
 void catch_sig(void);
 void *got_a_client(void *arg);
 
-int	init_server(int port);
+int	init_server(int port, t_endpoint *endpoints);
 void launch_server(void);
 
 /* Parser callback */
@@ -65,6 +85,10 @@ int body_callback(http_parser *parser, const char *at, size_t length);
 int msg_complet_callback(http_parser *parser);
 int msg_begin_callback(http_parser *parser);
 int header_complete_callback(http_parser *parser);
+/* regex functions */
+int			compil_regex(t_endpoint *endpoints);
+t_response	execute_response(t_client *client, t_endpoint *endpoints);
+t_endpoint	*keep_endpoints(t_endpoint *endpoints);
 /* Utils functions */
 char	*get_header_value(t_client *client, char *field);
 
