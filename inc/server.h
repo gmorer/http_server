@@ -46,6 +46,8 @@ typedef struct			s_client
 	ssize_t				req_len;
 	char				*url;
 	char				*body;
+	regmatch_t			*params;
+	size_t				params_length;
 	size_t				body_len;
 	struct private		private;
 	unsigned int		method;

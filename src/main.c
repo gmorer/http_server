@@ -3,7 +3,16 @@
 
 t_response	hello_world(t_client *client)
 {
-	(void)client;
+	size_t	index;
+
+	index = 0;
+	printf("params length = %d\n", client->params_length);
+	while (index < client->params_length)
+	{
+		write(1, client->url + client->params[index].rm_so, client->params[index].rm_eo - client->params[index].rm_so);
+		write(1, "\n", 1);
+		index += 1;
+	}
 	printf("Hello world function\n");
 	return ((t_response){NULL, 0, 0});
 }
