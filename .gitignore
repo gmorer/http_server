@@ -1,3 +1,5 @@
 *.o
+*.gch
 server
 obj/
+libserver.a

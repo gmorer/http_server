@@ -50,6 +50,7 @@ static void *respond(t_client *client, t_response response)
 	if (send(client->clientfd, header, strlen(header), 0) == -1 ||
 		send(client->clientfd, response.body, response.body_len, 0) == -1)
 		dprintf(2, "Can't send\n");
+	free(response.body);
 	return (NULL);
 }
 

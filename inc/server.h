@@ -20,6 +20,7 @@
 # define MAX_HEADER 100
 # define ALLOCATION_ERROR (write(2, "Allocation error\n", 17))
 # define MAX_REQUEST_SIZE 1024 * 1024 * 5 // 5 MegaBytes
+# define ENDPOINTS_END ((t_endpoint){NULL, 0, 0, 0})
 
 struct header_input {
 	size_t	field_len;

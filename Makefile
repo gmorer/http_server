@@ -6,11 +6,11 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2019/03/01 19:10:58 by tet              ###   ########.fr        #
+#    Updated: 2019/03/02 22:09:52 by tet              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = server
+NAME = libserver.a
 
 CC = gcc
 
@@ -21,7 +21,6 @@ LIBFLAG = -lpthread
 CPATH = src/
 
 CFILES = \
-	main.c \
 	signal.c \
 	client.c \
 	utils.c \
@@ -35,6 +34,7 @@ OPATH = obj/
 OFILES = $(CFILES:.c=.o)
 
 OBJ = $(addprefix $(OPATH), $(OFILES))
+OBJ += obj/http_parser.o
 
 HPATH = inc/ \
 		http_parser/
@@ -53,7 +53,9 @@ INC = $(addprefix -I./, $(HPATH))
 all: http-parser $(NAME)
 
 $(NAME): $(OPATH) $(OBJ)
-	$(CC) $(LIBFLAG) $(CFLAGS) $(OBJ) obj/http_parser.o -o $(NAME)
+	#$(CC) $(LIBFLAG) $(CFLAGS) $(OBJ) obj/http_parser.o -o $(NAME)
+	ar -rc $(NAME) $(OBJ) 
+	ranlib $(NAME)
 
 $(OPATH):
 	mkdir -p $(OPATH)
@@ -73,3 +75,6 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+test:
+	$(CC) test/main.c -Iinc/ libserver.a -lpthread inc/http_server.h -o server
