@@ -1,6 +1,6 @@
 # HTTP_PARSER
 
-__ExpressJs__ like http server in __C__ library with only two functions: `init_server()` and `start_server()`.
+__ExpressJs__ like http server in __C__, library with only two functions: `init_server()` and `start_server()`.
 You need to use regex for the path matching.
 
 ## Example:
