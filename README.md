@@ -22,6 +22,14 @@ int main(int argc, char **argv)
 	launch_server();
 	return (0);
 ```
+```bash
+$ curl localhost:8080/
+Hello world
+$ curl localhost:8080/sum/42/43
+85
+$ curl localhost:8080/test
+Error 404
+```
 see `test/main.c`
 
 ## compil

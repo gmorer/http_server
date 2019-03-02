@@ -6,7 +6,7 @@
 #    By: gmorer <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/05/20 11:35:32 by gmorer            #+#    #+#              #
-#    Updated: 2019/03/02 22:09:52 by tet              ###   ########.fr        #
+#    Updated: 2019/03/02 22:11:34 by tet              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ HFILES = \
 
 INC = $(addprefix -I./, $(HPATH))
 
-.PHONY: all install clean fclean re
+.PHONY: all install clean fclean re test
 
 all: http-parser $(NAME)
 
