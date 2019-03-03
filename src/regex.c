@@ -2,7 +2,7 @@
 
 t_response response_error(char *error_msg, int http_code)
 {
-	return ((t_response){error_msg, strlen(error_msg), http_code});
+	return ((t_response){strdup(error_msg), strlen(error_msg), http_code});
 }
 
 t_endpoint	*keep_endpoints(t_endpoint *endpoints)
