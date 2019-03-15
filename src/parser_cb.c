@@ -1,7 +1,7 @@
 #include "server.h"
 
-#define HEADER_LINE (client->private.header_line)
-#define CURRENT_LINE (client->private.headers[HEADER_LINE - 0])
+#define HEADER_LINE (client->header_len)
+#define CURRENT_LINE (client->headers[HEADER_LINE])
 
 int url_callback(http_parser *parser, const char *at, size_t length)
 {
@@ -32,7 +32,7 @@ int header_field_callback(http_parser *parser, const char *at, size_t length)
 	client = parser->data;
 	if (HEADER_LINE >= MAX_HEADER)
 			return 1; // error
-	if (!client->private.last_was_value && client->private.headers[0].field != NULL)
+	if (!client->private.last_was_value && client->headers[0].field != NULL)
 	{
     	CURRENT_LINE.field = realloc(CURRENT_LINE.field,
         	CURRENT_LINE.field_len + length + 1);

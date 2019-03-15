@@ -24,8 +24,6 @@ struct private {
 	char				last_was_value;
 	char				message_complete;
 	char				header_complete;
-	int					header_line;
-	struct header_input headers[MAX_HEADER];
 	size_t				write_offset;
 	size_t				buffer_size;
 	char				*buffer;
@@ -37,9 +35,11 @@ typedef struct			s_client
 	struct	sockaddr_in	client_addr;
 	ssize_t				req_len;
 	char				*url;
-	char				*body;
 	regmatch_t			*params;
 	size_t				params_length;
+	struct header_input headers[MAX_HEADER];
+	int					header_len;
+	char				*body;
 	size_t				body_len;
 	struct private		private;
 	unsigned int		method;
@@ -47,10 +47,11 @@ typedef struct			s_client
 
 typedef struct			s_response
 {
-	char	*body;
-	size_t	body_len;
-	int		http_code;
-	// header
+	char				*body;
+	size_t				body_len;
+	int					http_code;
+	struct header_input	headers;
+	int					headers_len;
 }						t_response;
 
 typedef t_response (endpoint_action)(t_client *client);

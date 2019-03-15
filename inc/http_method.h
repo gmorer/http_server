@@ -1,57 +1,79 @@
+#ifndef HHTP_METHODE
 
-/*
-  XX(0,  DELETE,      DELETE)       \
-  XX(1,  GET,         GET)          \
-  XX(2,  HEAD,        HEAD)         \
-  XX(3,  POST,        POST)         \
-  XX(4,  PUT,         PUT)          \
-  // pathological                   \
-  XX(5,  CONNECT,     CONNECT)      \
-  XX(6,  OPTIONS,     OPTIONS)      \
-  XX(7,  TRACE,       TRACE)        \
-  // WebDAV	                        \
-  XX(8,  COPY,        COPY)         \
-  XX(9,  LOCK,        LOCK)         \
-  XX(10, MKCOL,       MKCOL)        \
-  XX(11, MOVE,        MOVE)         \
-  XX(12, PROPFIND,    PROPFIND)     \
-  XX(13, PROPPATCH,   PROPPATCH)    \
-  XX(14, SEARCH,      SEARCH)       \
-  XX(15, UNLOCK,      UNLOCK)       \
-  XX(16, BIND,        BIND)         \
-  XX(17, REBIND,      REBIND)       \
-  XX(18, UNBIND,      UNBIND)       \
-  XX(19, ACL,         ACL)          \
-  // subversion                     \
-  XX(20, REPORT,      REPORT)       \
-  XX(21, MKACTIVITY,  MKACTIVITY)   \
-  XX(22, CHECKOUT,    CHECKOUT)     \
-  XX(23, MERGE,       MERGE)        \
-  // upnp                           \
-  XX(24, MSEARCH,     M-SEARCH)     \
-  XX(25, NOTIFY,      NOTIFY)       \
-  XX(26, SUBSCRIBE,   SUBSCRIBE)    \
-  XX(27, UNSUBSCRIBE, UNSUBSCRIBE)  \
-  // RFC-5789                       \
-  XX(28, PATCH,       PATCH)        \
-  XX(29, PURGE,       PURGE)        \
-  // CalDAV                         \
-  XX(30, MKCALENDAR,  MKCALENDAR)   \
-  // RFC-2068, section 19.6.1.2     \
-  XX(31, LINK,        LINK)         \
-  XX(32, UNLINK,      UNLINK)       \
-  // icecast                        \
-  XX(33, SOURCE,      SOURCE)       \
-*/
+# define HTTP_METHODE
 
-/*
- * From Http_parser
- */
 
-typedef enum {
-	DELETE = 0,
-	GET = 1,
-	POST = 3,
-	PUT = 4,
-	PATCH = 28
-	}	method_type;
+# define MAX_HTTP_CODE 511
+
+# define XX(a, b, c) (struct t_methode){a, b, c}
+
+struct t_methode {
+	int	number;
+	char	*name;
+};
+
+# define METHODE_ARRAY (struct t_methode[]) {	\
+	XX(100, "CONTINUE")							\
+	XX(101, "SWITCHING_PROTOCOLS")				\
+	XX(102, "PROCESSING")						\
+	XX(200, "OK")								\
+	XX(201, "CREATED")							\
+	XX(202, "ACCEPTED")							\
+	XX(203, "NON_AUTHORITATIVE_INFORMATION")	\
+	XX(204, "NO_CONTENT")						\
+	XX(205, "RESET_CONTENT")					\
+	XX(206, "PARTIAL_CONTENT")					\
+	XX(207, "MULTI_STATUS")						\
+	XX(208, "ALREADY_REPORTED")					\
+	XX(226, "IM_USED")							\
+	XX(300, "MULTIPLE_CHOICES")					\
+	XX(301, "MOVED_PERMANENTLY")				\
+	XX(302, "FOUND")							\
+	XX(303, "SEE_OTHER")						\
+	XX(304, "NOT_MODIFIED")						\
+	XX(305, "USE_PROXY")						\
+	XX(307, "TEMPORARY_REDIRECT")				\
+	XX(308, "PERMANENT_REDIRECT")				\
+	XX(400, "BAD_REQUEST")						\
+	XX(401, "UNAUTHORIZED")						\
+	XX(402, "PAYMENT_REQUIRED")					\
+	XX(403, "FORBIDDEN")						\
+	XX(404, "NOT_FOUND")						\
+	XX(405, "METHOD_NOT_ALLOWED")				\
+	XX(406, "NOT_ACCEPTABLE")					\
+	XX(407, "PROXY_AUTHENTICATION_REQUIRED")	\
+	XX(408, "REQUEST_TIMEOUT")					\
+	XX(409, "CONFLICT")							\
+	XX(410, "GONE")								\
+	XX(411, "LENGTH_REQUIRED")					\
+	XX(412, "PRECONDITION_FAILED")				\
+	XX(413, "PAYLOAD_TOO_LARGE")				\
+	XX(414, "URI_TOO_LONG")						\
+	XX(415, "UNSUPPORTED_MEDIA_TYPE")			\
+	XX(416, "RANGE_NOT_SATISFIABLE")			\
+	XX(417, "EXPECTATION_FAILED")				\
+	XX(421, "MISDIRECTED_REQUEST")				\
+	XX(422, "UNPROCESSABLE_ENTITY")				\
+	XX(423, "LOCKED")							\
+	XX(424, "FAILED_DEPENDENCY")				\
+	XX(426, "UPGRADE_REQUIRED")					\
+	XX(428, "PRECONDITION_REQUIRED")			\
+	XX(429, "TOO_MANY_REQUESTS")				\
+	XX(431, "REQUEST_HEADER_FIELDS_TOO_LARGE")	\
+	XX(451, "UNAVAILABLE_FOR_LEGAL_REASONS")	\
+	XX(500, "INTERNAL_SERVER_ERROR")			\
+	XX(501, "NOT_IMPLEMENTED")					\
+	XX(502, "BAD_GATEWAY")						\
+	XX(503, "SERVICE_UNAVAILABLE")				\
+	XX(504, "GATEWAY_TIMEOUT")					\
+	XX(505, "HTTP_VERSION_NOT_SUPPORTED")		\
+	XX(506, "VARIANT_ALSO_NEGOTIATES")			\
+	XX(507, "INSUFFICIENT_STORAGE")				\
+	XX(508, "LOOP_DETECTED")					\
+	XX(510, "NOT_EXTENDED")						\
+	XX(511, "NETWORK_AUTHENTICATION_REQUIRED")	\
+}
+
+# undef XX
+
+#endif
