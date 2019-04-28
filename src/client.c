@@ -19,20 +19,6 @@ static void free_inside_client(t_client *client)
 			free(client->headers[i].value);
 		i += 1;
 	}
-	i = 0;
-	if (client->headers && client->headers_len)
-	{
-		while (i < client->header_len)
-		{
-			if (client->headers[i] && client->headers[i].field)
-				free(client->headers[i].field);
-			if (client->headers[i] && client->headers[i].field)
-				free(client->headers[i].value);
-			if (client->headers[i])
-				free(client->headers[i]);
-		}
-		free(client-.headers);
-	}
 	if (client->params) free(client->params);
 	if (client->url) free(client->url);
 	if (client->private.buffer) free(client->private.buffer);
@@ -44,10 +30,8 @@ static void free_inside_client(t_client *client)
 static void *respond(t_client *client, t_response response)
 {
 	char	*header;
-	int	i;
-	int	header_len;
+	int		i;
 
-	header_len = sizeof(HEADER_HTTP) + get_size(response.http_code) + 3 + sizeof(
 	i = 0;
 	header = malloc(snprintf(NULL, 0, HEADER, response.body_len) + 1);
 	sprintf(header, HEADER, response.body_len);

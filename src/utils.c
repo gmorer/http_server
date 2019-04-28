@@ -2,21 +2,21 @@
 
 char *get_code_string(int num)
 {
-	static struct t_methode	methodes[] = METHODE_ARRAY;
-	int			len;
-	int			index;
+	static t_method methods[] = METHODS_ARRAY;
+	int             len;
+	int             index;
 
 	len = 58; // methode_array len;
 	while (index < len && index > 0)
 	{
-		if (methodes[index].number == num)
-			return methodes[index].name;
+		if (methods[index].number == num)
+			return methods[index].name;
 		index += 1;
 	}
 	return get_code_string(500);
 }
 
-char	*get_header_value(t_client *client, char *field)
+char *get_header_value(t_client *client, char *field)
 {
 	int i;
 
