@@ -1,6 +1,6 @@
-#ifndef HHTP_METHODE
+#ifndef _HTTP_METHOD_
 
-# define HTTP_METHODE
+# define _HTTP_METHOD_
 
 
 # define MAX_HTTP_CODE 511

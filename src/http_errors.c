@@ -1,4 +1,4 @@
-#include "server.h"
+#include "../inc/server.h"
 
 // char *get_error(int error)
 // {

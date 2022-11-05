@@ -1,12 +1,16 @@
-#include "server.h"
+#include "../inc/server.h"
+
+void panic(char *msg) {
+	dprintf(2, "%s\n", msg);
+	exit(EXIT_FAILURE);
+}
 
 char *get_code_string(int num)
 {
 	static t_method methods[] = METHODS_ARRAY;
-	int             len;
-	int             index;
+	int             len = SIZE_OF(methods);
+	int             index = 0;
 
-	len = 58; // methode_array len;
 	while (index < len && index > 0)
 	{
 		if (methods[index].number == num)
@@ -18,10 +22,9 @@ char *get_code_string(int num)
 
 char *get_header_value(t_client *client, char *field)
 {
-	int i;
+	int i = 0;
 
-	i = 0;
-	while (i++ < client->header_len)
+	while (i++ < client->headers_len)
 		if (strcmp(field, client->headers[i].field) == 0)
 			return client->headers[i].value;
 	return NULL;

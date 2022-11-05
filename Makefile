@@ -14,27 +14,26 @@ NAME = libserver.a
 
 CC = gcc
 
-CFLAGS = -g # -Werror -Wall -Wextra
+CFLAGS = -g3 -fsanitize=address,undefined -Werror -Wall -Wextra
 
 LIBFLAG = -lpthread
 
 CPATH = src/
 
 CFILES = \
-	signal.c \
 	client.c \
 	utils.c \
 	http_errors.c \
-	parser_cb.c \
 	server.c \
-	regex.c
+	regex.c \
+	worker.c
 
 OPATH = obj/
 
 OFILES = $(CFILES:.c=.o)
 
 OBJ = $(addprefix $(OPATH), $(OFILES))
-OBJ += obj/http_parser.o
+# OBJ += obj/http_parser.o
 
 HPATH = inc/ \
 		http_parser/
@@ -44,6 +43,7 @@ HFILES = \
 	inc/http_method.h \
 	inc/utils.h \
 	inc/http_errors.h \
+	inc/worker.h \
 	http_parser/http_parser.h
 
 INC = $(addprefix -I./, $(HPATH))
@@ -52,18 +52,18 @@ INC = $(addprefix -I./, $(HPATH))
 
 all: http-parser $(NAME)
 
-$(NAME): $(OPATH) $(OBJ)
-	#$(CC) $(LIBFLAG) $(CFLAGS) $(OBJ) obj/http_parser.o -o $(NAME)
-	ar -rc $(NAME) $(OBJ) 
+$(NAME): $(OPATH) $(OBJ) http-parser
+	ar -rc $(NAME) $(OBJ) obj/http_parser.o
 	ranlib $(NAME)
 
 $(OPATH):
 	mkdir -p $(OPATH)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
-	$(CC) $(INC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-http-parser: $(OPATH)
+http-parser: obj/http_parser.o
+obj/http_parser.o: $(OPATH) http_parser/http_parser.c
 	cd http_parser
 	cc  -I./http_parser/ -DHTTP_PARSER_STRICT=1 -Wall -Wextra -Werror -O0 -g -c http_parser/http_parser.c -o obj/http_parser.o
 
@@ -76,5 +76,6 @@ fclean: clean
 
 re: fclean all
 
-test:
-	$(CC) test/main.c -Iinc/ libserver.a -lpthread inc/http_server.h -o server
+test: ${NAME} test/main.c
+	$(CC) test/main.c -g3 -fsanitize=address,undefined -Iinc/ ${NAME} -lpthread inc/http_server.h -o server
+

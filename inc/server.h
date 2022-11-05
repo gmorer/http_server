@@ -1,20 +1,27 @@
-#ifndef IOSOCKET_H
-#define IOSOCKET_H
+#ifndef _SERVER_H_
+#define _SERVER_H_
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <string.h> //strlen
-#include <sys/socket.h>
-#include <arpa/inet.h> //inet_addr
-#include <sys/types.h>
+#include <arpa/inet.h>
+#include <assert.h>
 #include <regex.h>
-#include "http_parser.h"
-#include "http_method.h"
-#include "utils.h"
-#include "http_errors.h"
+#include <signal.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/epoll.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <pthread.h>
 
+#include "http_errors.h"
+#include "http_method.h"
+#include "http_parser.h"
+#include "utils.h"
+#include "worker.h"
+
+# define POLL_BUFFER_LEN 50
 # define BUFF_SIZE 80*1024
 # define DEFAULT_PORT 8080
 # define MAX_HEADER 100
@@ -23,19 +30,27 @@
 # define ENDPOINTS_END ((t_endpoint){NULL, 0, 0, 0})
 
 struct header_input {
-	size_t	field_len;
+	size_t	field_size;
 	char	*field;
-	size_t	value_len;
+	size_t	value_size;
 	char	*value;
 };
 
-struct private {
+enum _parser_state {
+	INITIAL = 0,
+	HEADER_FIELD,
+	HEADER_VALUE,
+};
+
+struct _private {
+	pthread_mutex_t 	lock;
+	enum _parser_state  parser_state;
 	char				last_was_value;
 	char				message_complete;
 	char				header_complete;
 	size_t				write_offset;
 	size_t				buffer_size;
-	char				*buffer;
+	char				buffer[BUFF_SIZE];
 };
 
 typedef struct			s_client
@@ -43,15 +58,17 @@ typedef struct			s_client
 	int					clientfd;
 	struct	sockaddr_in	client_addr;
 	ssize_t				req_len;
+	size_t				url_size;
 	char				*url;
 	regmatch_t			*params;
 	size_t				params_length;
-	int					header_len;
+	int					headers_len;
 	struct header_input headers[MAX_HEADER];
 	char				*body;
-	size_t				body_len;
-	struct private		private;
+	size_t				body_size;
+	struct _private		_private;
 	unsigned int		method;
+	http_parser			parser;
 }						t_client;
 
 typedef struct			s_response
@@ -59,7 +76,7 @@ typedef struct			s_response
 	char				*body;
 	size_t				body_len;
 	int					http_code;
-	struct header_input	headers;
+	struct header_input	*headers;
 	int					headers_len;
 }						t_response;
 
@@ -73,27 +90,36 @@ typedef struct		s_endpoint
 	regex_t			comp_url;
 }					t_endpoint;
 
-extern int g_socket_sd;
+/* client.c */
+t_client *accept_client(int socket_fd);
 
 void catch_sig(void);
-void *got_a_client(void *arg);
 
+void close_server();
 int	init_server(int port, t_endpoint *endpoints);
 void launch_server(void);
 
+/* client.c */
+t_client *accept_client(int socket_fd);
+void read_client(void *data);
+void free_client(t_client *client);
+
 /* Parser callback */
-int url_callback(http_parser *parser, const char *at, size_t length);
-int header_field_callback(http_parser *parser, const char *at, size_t length);
-int header_value_callback(http_parser *parser, const char *at, size_t length);
-int body_callback(http_parser *parser, const char *at, size_t length);
-int msg_complet_callback(http_parser *parser);
-int msg_begin_callback(http_parser *parser);
-int header_complete_callback(http_parser *parser);
+/* int url_callback(http_parser *parser, const char *at, size_t length); */
+/* int header_field_callback(http_parser *parser, const char *at, size_t length); */
+/* int header_value_callback(http_parser *parser, const char *at, size_t length); */
+/* int body_callback(http_parser *parser, const char *at, size_t length); */
+/* int msg_complet_callback(http_parser *parser); */
+/* int msg_begin_callback(http_parser *parser); */
+/* int header_complete_callback(http_parser *parser); */
 /* regex functions */
-int			compil_regex(t_endpoint *endpoints);
-t_response	execute_response(t_client *client, t_endpoint *endpoints);
-t_endpoint	*keep_endpoints(t_endpoint *endpoints);
+bool		compil_regex(t_endpoint *endpoints);
+t_response	execute_response(t_client *client);
 /* Utils functions */
 char	*get_header_value(t_client *client, char *field);
+
+
+
+void panic(char *msg);
 
 #endif
