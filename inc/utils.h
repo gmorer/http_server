@@ -1,6 +1,8 @@
 #ifndef _UTILS_H_
 # define _UTILS_H_
 
+# define ALLOCATION_ERROR (write(2, "Allocation error\n", 17))
+
 #define SIZE_OF(a) (sizeof(a) / sizeof((a)[0]))
 
 #define UNUSED(x) ((void)x)

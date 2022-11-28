@@ -1,4 +1,5 @@
 #include "../inc/server.h"
+#include "../inc/io.h"
 
 int g_socket_fd;
 
@@ -32,9 +33,9 @@ int init_server(int port, t_endpoint *endpoints)
 {
 	int one = 1;
 	struct sockaddr_in server = {
-	    .sin_family = AF_INET,
-	    .sin_port = htons(port ? port : DEFAULT_PORT),
-	    .sin_addr.s_addr = INADDR_ANY,
+		.sin_family = AF_INET,
+		.sin_port = htons(port ? port : DEFAULT_PORT),
+		.sin_addr.s_addr = INADDR_ANY,
 	};
 
 	if ((g_socket_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -61,6 +62,10 @@ int init_server(int port, t_endpoint *endpoints)
 
 void launch_server(void)
 {
+	struct io_event_queue ring = {};
+	if (io_setup_uring(&ring) != 0) {
+		return ;
+	}
 	int poll = epoll_create(1);
 
 	if (poll == -1) {

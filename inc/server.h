@@ -13,7 +13,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <pthread.h>
 
 #include "http_errors.h"
 #include "http_method.h"
@@ -25,7 +24,6 @@
 # define BUFF_SIZE 80*1024
 # define DEFAULT_PORT 8080
 # define MAX_HEADER 100
-# define ALLOCATION_ERROR (write(2, "Allocation error\n", 17))
 # define MAX_REQUEST_SIZE 1024 * 1024 * 5 // 5 MegaBytes
 # define ENDPOINTS_END ((t_endpoint){NULL, 0, 0, 0})
 

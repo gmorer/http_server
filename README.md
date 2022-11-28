@@ -40,6 +40,9 @@ compile with: `make && gcc test/main.c -Iinc/ libserver.a -lpthread inc/http_ser
 - [x] simple request
 - [x] request parsing (thx to http_parser)
 - [x] regex endpoint routing
+- [ ] io_uring
+- [ ] bufferize read
+- [ ] seperate server and http
 - [ ] response header
 - [ ] middleware
 - [ ] https

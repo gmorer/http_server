@@ -1,6 +1,8 @@
 #include "../inc/worker.h"
 #include "../inc/utils.h"
 
+#define CPU_PER_WORKER 1
+
 struct s_worker (*g_workers)[] = NULL;
 long g_proc_num = 0;
 
@@ -52,8 +54,20 @@ struct t_job *_dequeue() {
 }
 
 void *_wait_for_work(void *this) {
-	UNUSED(this);
 	// TODO: properly kill thoses
+	
+	struct s_worker *self = (struct s_worker*)this;
+
+	// Attach the worker the the cpu
+	cpu_set_t *cpu_set = CPU_ALLOC(CPU_PER_WORKER);
+	if (cpu_set == NULL) {
+		ALLOCATION_ERROR;
+		return NULL;
+	}
+	size_t cpu_set_size = CPU_ALLOC_SIZE(CPU_PER_WORKER);
+	CPU_ZERO_S(cpu_set_size, cpu_set);
+	CPU_SET_S(self->cpu_id, cpu_set_size, cpu_set);
+
 	while (1) {
 		/* wait for job to pop */
 		pthread_cond_wait(&g_cond_worker, &g_mutex_cond);
@@ -97,6 +111,7 @@ bool init_workers() {
 
 	long i = 0;
 	while (i < g_proc_num) {
+		(*g_workers)[i].cpu_id = i;
 		pthread_create(&((*g_workers)[i].tid), &workers_attr, _wait_for_work, (void*)&(*g_workers)[i]);
 		i += 1;
 	}

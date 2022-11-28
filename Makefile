@@ -14,9 +14,9 @@ NAME = libserver.a
 
 CC = gcc
 
-CFLAGS = -g3 -fsanitize=address,undefined -Werror -Wall -Wextra
+CFLAGS = -g3 -fsanitize=address,undefined -Werror -Wall -Wextra -Wtrivial-auto-var-init
 
-LIBFLAG = -lpthread
+LIBFLAG = -lpthread -lc -luring
 
 CPATH = src/
 
@@ -26,7 +26,8 @@ CFILES = \
 	http_errors.c \
 	server.c \
 	regex.c \
-	worker.c
+	worker.c \
+	io.c
 
 OPATH = obj/
 
